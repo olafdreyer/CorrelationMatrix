@@ -119,18 +119,140 @@ are already known. In addition to these two, one might decide to calibrate the c
 \begin{equation}
 	(x_E, X_E^A),(x_E, x_A), (x_A, X_E^A)\text{, and\ } (X_E^A, \nu_{EA}).
 \end{equation}
-The question that arises is then how to determine the remaining coefficients (see figure \ref{fig.xccymodel} of the correlation matrix.
+The question that arises is then how to determine the remaining coefficients (see figure \ref{fig.xccymodel}) of the correlation matrix.
 
 \begin{figure}[hbt]
   \begin{center}
   	\includegraphics[width=10cm]{img/xccymodel.png}
   \end{center}
-  \caption{The correlation matrix for the cross currency model. The coefficients $(x_E, \nu_E)$ and $(x_A, \nu_A)$ (the boxes with the solid lines) will be determined in two separate interest rate calibrations. The coefficients $(x_E, X_E^A)$, $(x_E, x_A)$, $(x_A, X_E^A)$, and $(X_E^A, \nu_{EA})$ (the boxes with the dashed lines) will be determined in the cross currency calibration. The question then arises what to do witht he remaining coefficients?}\label{fig.xccymodel}
+  \caption{The correlation matrix for the cross currency model. The coefficients $(x_E, \nu_E)$ and $(x_A, \nu_A)$ (the boxes with the solid lines) will be determined in two separate interest rate calibrations. The coefficients $(x_E, X_E^A)$, $(x_E, x_A)$, $(x_A, X_E^A)$, and $(X_E^A, \nu_{EA})$ (the boxes with the dashed lines) will be determined in the cross currency calibration. The question then arises what to do with he remaining coefficients?}\label{fig.xccymodel}
 \end{figure}
 
 \section{Independence, maximal determinant, and entropy}
-Before we answer the question of the last section in full generality we look at a simpler case. 
+\subsection{A simpler problem}
+Before we answer the question of the last section in full generality we look at a simpler case to determine how we want to complete the matrix $M$. As in the previous section we denote by $I$ be the set of stochastic processes. For this simple case we assume that there are two sets $\alpha, \beta\subset I$ with $\alpha\cup\beta = I$ and $\alpha\cap\beta = \gamma\ne \emptyset$. For any $\delta\subset I$ we will denote by
+\begin{equation}
+	M[\delta]
+\end{equation}
+the principal submatrix of $M$ with row and column indices in $\delta$. In general we will denote for $\delta,\eta\subset I$ by 
+\begin{equation}
+	M[\delta,\eta]
+\end{equation}
+the submatrix of $M$ with row indices in $\delta$ and column indices in $\eta$. We assume that
+\begin{equation}
+	M[\alpha] \text{\ and\ } M[\beta] 
+\end{equation}
+are known. The matrix $M$ thus has the form
+\begin{equation}\label{eqn.corrmatrix}
+	M = \begin{pmatrix}
+		C & D & W \\
+		D^T & E & F \\
+		W^T & F^T & G
+	\end{pmatrix}.
+\end{equation}
+Using the notation that we have just introduced we have
+\begin{align}
+	M[\alpha] & = \begin{pmatrix}
+		C & D  \\
+		D^T & E 
+	\end{pmatrix} \\
+	M[\beta] & = \begin{pmatrix}
+		E & F  \\
+		F^T & G 
+	\end{pmatrix} \\
+	M[\gamma] & = E \\
+	M[ \alpha-\gamma, \alpha-\gamma] & = C \\
+	M[ \alpha-\gamma, \gamma] & = D \\
+	M[ \alpha-\gamma, \beta-\gamma] & = W \\
+	M[ \gamma, \beta-\gamma] & = F \\
+	M[ \beta-\gamma, \beta-\gamma] & = F
+\end{align}
+The part of the matrix that we need to determine is $W$. If the overlap $E$ didn't exist we would just set $W=0$ and thus ensure that $\alpha$ and $\beta$ are independent. This is the desirable result because any other choice would assume information about the correlation between $\alpha$ and $\beta$ that we do not have. Since the overlap $E$ is present, we have to make a different choice.
 
+\subsection{Conditioning \& Schur complement}
+For $\delta\subset I$ let us assume that $M[\delta]$ is invertible (we will weaken this assumption later). Then let 
+\begin{equation}
+	M/M[\delta] = M[I-\delta,I-\delta] - M[I-\delta, \delta]M[\delta]^{-1}M[\delta, I-\delta]
+\end{equation}
+be the Schur complement\cite{hayns} (see \cite{horn} for a an overview of the properties of the Schur complement) of $M[\delta]$ in $M$. In our context the Schur complement arises naturally when we ask for the correlation matrix of a subset of the stochastic variables in $I$ conditioned on the values of the remaining variables. If the variables that we are conditioning on are in $\gamma$ then $M/M[\gamma]$ is the correlation matrix for the variables in $I-\gamma$(for a proof see \cite[chapter 8]{rao} and \cite{cottle}).
+
+\subsection{The completion}
+With the result from the last section we have a way to proceed. We can look at the correlation matrix for the elements in $I$ that we obtain when we condition on the elements in $\gamma=\alpha\cap\beta$. This matrix is given by the Schur complement
+\begin{equation}
+	M/M[\sigma].
+\end{equation}
+We can use equation (\ref{eqn.corrmatrix}) to write
+\begin{align}
+	M/M[\sigma] & = M/E \\
+	& = \begin{pmatrix}
+		C - D E^{-1} D^T & W - DE^{-1}F \\
+		W^T - F^TE^{-1}D^T & G - F^TE^{-1}F
+		\end{pmatrix}.
+\end{align}
+A special choice for $W$ now presents itself. If we choose 
+\begin{equation}\label{eqn.choice}
+	W = DE^{-1}F 
+\end{equation}
+the off-diagonal matrices vanish and the matrix becomes block-diagonal. We can even interpret the remaining blocks. We note that 
+\begin{align}
+	M[\alpha]/M[\gamma] & = C - D E^{-1} D^T \\
+	M[\beta]/M[\gamma] & = G - F^TE^{-1}F.
+\end{align}
+Again, using the result from the previous section, we see that the remaining blocks give the correlation matrix for $\alpha$ and $\beta$ respectively, when we condition on $\gamma$. The block-diagonal form in equation (\ref{eqn.choice}) says that the variables $\alpha$ conditioned on $\gamma$ are independent from the variables $\beta$ conditioned on $\gamma$. If $f$ is the corresponding density function we have
+\begin{equation}
+	f(x_{I-\gamma} \vert \gamma ) = f(x_{\alpha-\gamma} \vert \gamma )f(x_{\beta-\gamma} \vert \gamma ).
+\end{equation}
+Given that $\gamma$ is shared by both $\alpha$ and $\beta$ this is the most independence that we can hope for. 
+
+\subsection{Maximal determinant}
+Another way to characterize the choice of $W$ in equation (\ref{eqn.choice}) is by looking at the determinant of $M$. In general we have 
+\begin{align}
+	\det(M) & = \det(M[\gamma]) \det(M/M[\gamma]) \\
+	& \le \det(M[\gamma]) \det(M[\alpha]/M[\gamma]) \det(M[\beta/M[\gamma]),\label{eqn.upperbound}
+\end{align}
+(see \cite{horn} for the first equality), where we have used the Fischer inequality in the second line. With $W$ as in equation (\ref{eqn.choice}) the Schur complement $M/M[\gamma]$ becomes block-diagonal and we obtain
+\begin{equation}
+	\det(M) = \det(M[\gamma]) \det(M[\alpha]/M[\gamma]) \det(M[\beta/M[\gamma]).
+\end{equation}
+The determinant thus reaches the upper bound of equation (\ref{eqn.upperbound}). Choosing $W$ as in equation (\ref{eqn.choice}) we thus maximize the determinant of $M$. 
+
+\subsection{Zeroes \& the inverse matrix}
+To state the next characterization of $W$ it is convenient to choose a different order for the rows and columns of $M$. Let us introduce the matrices
+\begin{align}
+	A = M[I-\gamma] \\
+	B = M[\gamma, I - \gamma]
+\end{align}
+and write
+\begin{equation}
+	M = \begin{pmatrix}
+		E & B \\
+		B^T & A
+	\end{pmatrix}.
+\end{equation}
+Babachiewicz \cite{horn} found a way to write the inverse of $M$ in terms of the Schur complement:
+\begin{equation}
+	M^{-1} = \begin{pmatrix}
+		E^{-1} + E^{-1}B(M/E)^{-1}B^TE^{-1} & - E^{-1}B (M/E)^{-1} \\
+		-(M/E)^{-1}B^TE^{-1} & (M/E)^{-1}
+	\end{pmatrix}.
+\end{equation}
+With our choice of $W$, $M/E$ is block-diagonal. It follows that $(M/E)^{-1}$ is also block-diagonal:
+\begin{equation}
+	(M/E)^{-1} = \begin{pmatrix}
+		(M[\alpha]/M[\gamma])^{-1} & 0 \\
+		0 & (M[\beta]/M[\gamma])^{-1}
+	\end{pmatrix}
+\end{equation}
+We see that the inverse of $M$ has zeroes in exactly the places where the undetermined matrix $W$ used to be.
+
+\subsection{Entropy}
+The determinant of $M$ is directly related to the entropy of the distribution that is described by $M$:
+\begin{equation}
+	S = \frac{1}{2}\big(\log(\det(M)) + n \log(2\pi) + n\big)
+\end{equation}
+Because we are maximizing the determinant we are also maximizing the entropy. 
+
+\subsection{The semidefinite case}
 
 \section{The completion procedure}
 
@@ -138,6 +260,10 @@ Before we answer the question of the last section in full generality we look at 
 
 \begin{thebibliography}{MM}
 	\bibitem{heston} Steven L. Heston, A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options, The Review of Financial Studies, \textbf{6}(2), April 1993, 327--343.
+	\bibitem{hayns} Emilie Virginia Haynsworth, Determination of the inertia of a partitioned Hermitian matrix,  Linear  Algebra and its Applications \textbf{1}, 1968, 73--81. 
+	\bibitem{horn} Roger A. Horn, Basic  Properties  of  the  Schur  Complement. In Fuzhen Zhang (Ed.) The Schur complement and its application (17--46). Springer, 2005.
+	\bibitem{rao} C. Radharkishna Rao, Linear Statistical Inference and its Applications, 2nd edition, John Wiley \& Sons, Inc, 2002.
+	\bibitem{cottle} Richard W. Cottle, Manifestations of the Schur complement, Linear Algebra and its Applications \textbf{8}, 1974, 189--211. 
 \end{thebibliography}
 
 
