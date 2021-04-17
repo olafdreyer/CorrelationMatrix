@@ -179,11 +179,11 @@ be the Schur complement\cite{hayns} (see \cite{horn} for a an overview of the pr
 \subsection{The completion}
 With the result from the last section we have a way to proceed. We can look at the correlation matrix for the elements in $I$ that we obtain when we condition on the elements in $\gamma=\alpha\cap\beta$. This matrix is given by the Schur complement
 \begin{equation}
-	M/M[\sigma].
+	M/M[\gamma].
 \end{equation}
 We can use equation (\ref{eqn.corrmatrix}) to write
 \begin{align}
-	M/M[\sigma] & = M/E \\
+	M/M[\gamma] & = M/E \\
 	& = \begin{pmatrix}
 		C - D E^{-1} D^T & W - DE^{-1}F \\
 		W^T - F^TE^{-1}D^T & G - F^TE^{-1}F
@@ -202,7 +202,7 @@ Again, using the result from the previous section, we see that the remaining blo
 \begin{equation}
 	f(x_{I-\gamma} \vert \gamma ) = f(x_{\alpha-\gamma} \vert \gamma )f(x_{\beta-\gamma} \vert \gamma ).
 \end{equation}
-Given that $\gamma$ is shared by both $\alpha$ and $\beta$ this is the most independence that we can hope for. 
+Given that $\gamma$ is shared by both $\alpha$ and $\beta$ this is the most independence we can hope for. 
 
 \subsection{Maximal determinant}
 Another way to characterize the choice of $W$ in equation (\ref{eqn.choice}) is by looking at the determinant of $M$. In general we have 
@@ -217,33 +217,44 @@ Another way to characterize the choice of $W$ in equation (\ref{eqn.choice}) is 
 The determinant thus reaches the upper bound of equation (\ref{eqn.upperbound}). Choosing $W$ as in equation (\ref{eqn.choice}) we thus maximize the determinant of $M$. 
 
 \subsection{Zeroes \& the inverse matrix}
-To state the next characterization of $W$ it is convenient to choose a different order for the rows and columns of $M$. Let us introduce the matrices
-\begin{align}
-	A = M[I-\gamma] \\
-	B = M[\gamma, I - \gamma]
-\end{align}
-and write
+A remarkable formula due to Babachiewicz \cite{horn} expresses the inverse of a matrix in terms of the Schur complement. For a matrix
 \begin{equation}
-	M = \begin{pmatrix}
-		E & B \\
-		B^T & A
-	\end{pmatrix}.
-\end{equation}
-Babachiewicz \cite{horn} found a way to write the inverse of $M$ in terms of the Schur complement:
-\begin{equation}
-	M^{-1} = \begin{pmatrix}
-		E^{-1} + E^{-1}B(M/E)^{-1}B^TE^{-1} & - E^{-1}B (M/E)^{-1} \\
-		-(M/E)^{-1}B^TE^{-1} & (M/E)^{-1}
-	\end{pmatrix}.
-\end{equation}
-With our choice of $W$, $M/E$ is block-diagonal. It follows that $(M/E)^{-1}$ is also block-diagonal:
-\begin{equation}
-	(M/E)^{-1} = \begin{pmatrix}
-		(M[\alpha]/M[\gamma])^{-1} & 0 \\
-		0 & (M[\beta]/M[\gamma])^{-1}
+	\Sigma = \begin{pmatrix}
+		\Sigma_{11} & \Sigma_{12} \\ 
+		\Sigma_{21} & \Sigma_{22}
 	\end{pmatrix}
 \end{equation}
-We see that the inverse of $M$ has zeroes in exactly the places where the undetermined matrix $W$ used to be.
+we have
+\begin{equation}
+	\Sigma^{-1} = \begin{pmatrix}
+		\Sigma_{11}^{-1} + \Sigma_{11}^{-1}\Sigma_{12}(\Sigma/\Sigma_{11})^{-1}\Sigma_{21}\Sigma_{11}^{-1} &-\Sigma_{11}^{-1} \Sigma_{12} (\Sigma/\Sigma_{11})^{-1} \\ 
+		-(\Sigma/\Sigma_{11})^{-1}\Sigma_{21}\Sigma_{11}^{-1} & (\Sigma/\Sigma_{11})^{-1}
+	\end{pmatrix}.
+\end{equation}
+This formula has the remarkable property that only the inverses 
+\begin{equation}
+	\Sigma_{11}^{-1} \text{\ and\ } (\Sigma/\Sigma_{11})^{-1}
+\end{equation}
+appear in it. With our choice of $W$ in equation (\ref{eqn.choice}) the Schur complement $M/E$ is block diagonal. This means that also its inverse is block diagonal. Indeed, we have
+\begin{equation}
+	(M/E)^{-1} = \begin{pmatrix}
+		(M[\alpha]/E)^{-1} & 0 \\
+		0 & (M[\beta]/E)^{-1}
+	\end{pmatrix}.
+\end{equation}
+This allows us to write the inverse of $M$ explicitly:
+\begin{equation}
+	M^{-1} = \begin{pmatrix}
+		(M[\alpha]/E)^{-1} & -(M[\alpha]/E)^{-1} D E^{-1} & 0 \\
+		- E^{-1} D^T (M[\alpha]/E)^{-1} & \Xi & - E^{-1} F (M[\beta]/E)^{-1} \\
+		0 & - (M[\beta]/E)^{-1} F^T E^{-1} & (M[\beta]/E)^{-1}
+	\end{pmatrix},
+\end{equation}
+with
+\begin{equation}
+	\Xi = E^{-1} + E^{-1}\left(D^T(M[\alpha]/E)^{-1}D + F (M[\beta]/E)^{-1} F^T\right)E^{-1}.
+\end{equation}
+We see that the inverse of $M$ has zeroes in exactly those places where the undetermined matrix $W$ used to be.
 
 \subsection{Entropy}
 The determinant of $M$ is directly related to the entropy of the distribution that is described by $M$:
