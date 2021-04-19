@@ -165,11 +165,11 @@ where we make the following identifications:
 	M[ \alpha-\gamma, \gamma] & = D \\
 	M[ \alpha-\gamma, \beta-\gamma] & = W \\
 	M[ \gamma, \beta-\gamma] & = F \\
-	M[ \beta-\gamma, \beta-\gamma] & = F
+	M[ \beta-\gamma, \beta-\gamma] & = G
 \end{align}
 The part of the matrix that we need to determine is $W$. If the overlap $E$ didn't exist we would just set $W=0$ and thus ensure that $\alpha$ and $\beta$ are independent. This is the desirable result because any other choice would assume information about the correlation between $\alpha$ and $\beta$ that we do not have. Since the overlap $E$ is present, we have to make a different choice.
 
-\subsection{Conditioning \& Schur complement}
+\subsection{Conditioning \& the Schur complement}
 For $\delta\subset I$ let us assume that $M[\delta]$ is invertible (we will weaken this assumption later). Then let 
 \begin{equation}
 	M/M[\delta] = M[I-\delta,I-\delta] - M[I-\delta, \delta]M[\delta]^{-1}M[\delta, I-\delta]
@@ -214,11 +214,11 @@ Another way to characterize the choice of $W$ in equation (\ref{eqn.choice}) is 
 \begin{equation}
 	\det(M) = \det(M[\gamma]) \det(M[\alpha]/M[\gamma]) \det(M[\beta/M[\gamma]).
 \end{equation}
-The determinant thus reaches the upper bound of equation (\ref{eqn.upperbound}). Choosing $W$ as in equation (\ref{eqn.choice}) we thus maximize the determinant of $M$. 
+The determinant thus reaches the upper bound of equation (\ref{eqn.upperbound}). Choosing $W$ as in equation (\ref{eqn.choice}) thus maximizes the determinant of $M$. 
 
 \subsection{Zeroes \& the inverse matrix}
 A remarkable formula due to Babachiewicz \cite{horn} expresses the inverse of a matrix in terms of the Schur complement. For a matrix
-\begin{equation}
+\begin{equation}\label{eqn.sigma}
 	\Sigma = \begin{pmatrix}
 		\Sigma_{11} & \Sigma_{12} \\ 
 		\Sigma_{21} & \Sigma_{22}
@@ -264,6 +264,85 @@ The determinant of $M$ is directly related to the entropy of the distribution th
 Because we are maximizing the determinant we are also maximizing the entropy. 
 
 \subsection{The semidefinite case}
+In the previous sections we have assumed that $E=M[\gamma]$ is non-singular so that $E^{-1}$ exists. In this section we will only assume that $E$ is positive semi-definite. It is in this case that our results differ from those in \cite{smith}. Because of this we give new proves for the following results that do not make a distinction between the definite and semi-definite case. We start by noting some properties of symmetric matrices that are also positive semi-definite. 
+
+\begin{lemma}\label{lem.symm}
+	Let $\Sigma$ be a symmetric matrix that is partitioned as in equation (\ref{eqn.sigma}). If $\Sigma$ is positive semidefinite then we have
+	\begin{enumerate}
+		\item $\mathcal{C}(\Sigma_{12})\subset \mathcal{C}(\Sigma_{11})$ \\
+		\item $\mathcal{R}(\Sigma_{21})\subset \mathcal{R}(\Sigma_{11})$ \\
+		\item $r(\Sigma) = r(\Sigma_{11}) + r(\Sigma_{22})$
+	\end{enumerate}
+	Here $\mathcal{C}(\cdot)$ denotes the span of the column vectors of a matrix, $\mathcal{R}(\cdot)$ denotes the row space, and $r(\cdot)$ denotes the rank of a matrix.  
+\end{lemma}
+
+\begin{proof}
+	The proof is given in appendix \ref{app.symm}. \qed
+\end{proof}
+
+In the following we no longer assume that the matrices are non-singular. It turns out that we can still define the Schur complement of a matrix. For a matrix $E$ we will denote by $E^-$ a generalized inverse of $E$. $E^-$ is a matrix that satisfies
+\begin{equation}
+	E E^{-}E = E.
+\end{equation}
+A particular example of a generalized inverse is the Moore-Penrose inverse $E^+$ \cite{roger}. For now, we will not assume that we are dealing with $E^+$ but keep the discussion general. Given a particular choice of generalized inverse we define
+\begin{equation}
+	\Sigma/\Sigma_{11} = \Sigma_{22} - \Sigma_{21}\Sigma_{11}^-\Sigma_{12}.
+\end{equation}
+If $\Sigma$ is a symmetric matrix that is also positive semi-definite it turns out that the Schur complement does not depend on the choice of the particular generalized inverse used in its definition.
+
+\begin{lemma} Let $\Sigma$ be a symmetric matrix that is partitioned as in equation (\ref{eqn.sigma}). If $\Sigma$ is positive semidefinite then
+\begin{equation}
+	\Sigma/\Sigma_{11} = \Sigma_{22} - \Sigma_{21}\Sigma_{11}^-\Sigma_{12}
+\end{equation}	
+does not depend on the choice of the generalized inverse $\Sigma_{11}^-$.
+\end{lemma}
+
+\begin{proof}
+	The proof is given in appendix \ref{app.symm}. \qed
+\end{proof}
+
+The next theorem characterizes positive symmetric matrices in terms of their Schur complement:
+
+\begin{theorem}\label{theo.charact}
+	Let $\Sigma$ be a symmetric matrix that is partitioned as in equation (\ref{eqn.sigma}) where $\Sigma_{11}$ and $\Sigma_{22}$ are square. Then $\Sigma\ge 0$ if and only if $\Sigma_{11}\ge 0$, $\mathcal{C}(\Sigma_{12})\subset \mathcal{C}(\Sigma_{11})$, and $\Sigma/\Sigma_{11}\ge 0$. 
+\end{theorem}
+
+\begin{proof}
+	See \cite[Theorem 1.20]{horn} and \cite{albert}. \qed
+\end{proof}
+
+In equation (\ref{eqn.choice}) we defined $W$ using the inverse $E^{-1}$. We are now going to define $W$ using a general inverse instead. The next theorem shows that this again defines a positive semidefinite completion of $M$. The following theorems then show that the other properties also carry over to the semidefinite case.
+
+\begin{theorem}
+	Let $M$ be as in equation (\ref{eqn.corrmatrix}). Let both $M[\alpha]$ and $M[\beta]$ be positive semidefinite. Setting 
+	\begin{align}
+		W & = DE^-F \\
+		  & = M[ \alpha-\gamma, \gamma]M[\gamma]^-M[ \gamma, \beta-\gamma]		
+	\end{align}
+	turns $M$ into a positive semidefinite matrix.
+\end{theorem}
+
+\begin{proof}
+	Since both $M[\alpha]$ and $M[\beta]$ are positive semidefinite it follows from theorem \ref{theo.charact} that
+	\begin{align}
+		E & = M[\gamma] \ge 0 \\
+		\mathcal{C}(D^T) & = \mathcal{C}(M[ \alpha-\gamma, \gamma]^T) \subset \mathcal{C}(E) \\
+		\mathcal{C}(F) & = \mathcal{C}(M[ \gamma, \beta-\gamma ]) \subset \mathcal{C}(E) \\
+		M[\alpha] / E & \ge 0 \\
+		M[\beta] / E & \ge 0
+	\end{align}
+	From this it follows that
+	\begin{align}
+		E & = M[\gamma] \ge 0 \\
+		\mathcal{C}(D^T\ F) & = \mathcal{C}( M[\gamma, I - \gamma] ) \subset  \mathcal{C}(E) \\
+		M/E & = \begin{pmatrix}
+			M[\alpha] / E & 0 \\
+			0 & M[\beta] / E
+		\end{pmatrix} \ge 0
+	\end{align}
+	Using theorem \ref{theo.charact} in the other direction now yields the result. \qed
+\end{proof}
+
 
 \section{The completion procedure}
 
@@ -275,7 +354,15 @@ Because we are maximizing the determinant we are also maximizing the entropy.
 	\bibitem{horn} Roger A. Horn, Basic  Properties  of  the  Schur  Complement. In Fuzhen Zhang (Ed.) The Schur complement and its application (17--46). Springer, 2005.
 	\bibitem{rao} C. Radharkishna Rao, Linear Statistical Inference and its Applications, 2nd edition, John Wiley \& Sons, Inc, 2002.
 	\bibitem{cottle} Richard W. Cottle, Manifestations of the Schur complement, Linear Algebra and its Applications \textbf{8}, 1974, 189--211. 
+	\bibitem{smith} Smith, R. (2008). The positive definite completion problem revisited Linear Algebra and its Applications  429(7), 1442-1452. https://dx.doi.org/10.1016/j.laa.2008.04.020
+	\bibitem{ouellette} Ouellette, D. (1981). Schur complements and statistics Linear Algebra and its Applications  36, 187-295. https://dx.doi.org/10.1016/0024-3795(81)90232-9
+	\bibitem{roger} Penrose, R. (1955). A generalized inverse for matrices Mathematical Proceedings of the Cambridge Philosophical Society  51(3), 406-413. https://dx.doi.org/10.1017/s0305004100030401
+	\bibitem{albert} Albert, A. (1969). Conditions for Positive and Nonnegative Definiteness in Terms of Pseudoinverses SIAM Journal on Applied Mathematics  17(2), 434-440. https://dx.doi.org/10.1137/0117041
 \end{thebibliography}
 
+\appendix
+
+\section{Symmetric matrices \& the Schur complement}
+\label{app.symm}
 
 \end{document}
