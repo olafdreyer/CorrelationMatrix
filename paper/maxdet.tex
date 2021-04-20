@@ -64,6 +64,7 @@
       \vrule height0.5em width0.5em depth0.25em\fi}
 
 \newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{definition}{Definition}
@@ -225,7 +226,7 @@ A remarkable formula due to Babachiewicz \cite{horn} expresses the inverse of a 
 	\end{pmatrix}
 \end{equation}
 we have
-\begin{equation}
+\begin{equation}\label{eqn.baba}
 	\Sigma^{-1} = \begin{pmatrix}
 		\Sigma_{11}^{-1} + \Sigma_{11}^{-1}\Sigma_{12}(\Sigma/\Sigma_{11})^{-1}\Sigma_{21}\Sigma_{11}^{-1} &-\Sigma_{11}^{-1} \Sigma_{12} (\Sigma/\Sigma_{11})^{-1} \\ 
 		-(\Sigma/\Sigma_{11})^{-1}\Sigma_{21}\Sigma_{11}^{-1} & (\Sigma/\Sigma_{11})^{-1}
@@ -284,7 +285,7 @@ In the following we no longer assume that the matrices are non-singular. It turn
 \begin{equation}
 	E E^{-}E = E.
 \end{equation}
-A particular example of a generalized inverse is the Moore-Penrose inverse $E^+$ \cite{roger}. For now, we will not assume that we are dealing with $E^+$ but keep the discussion general. Given a particular choice of generalized inverse we define
+A particular example of a generalized inverse is the Moore-Penrose inverse $E^+$ \cite{roger}. For now, we will not assume that we are dealing with $E^+$ but keep the discussion general. Let us look at a general matrix $\Sigma$ as in equation (\ref{eqn.sigma}). Given a particular choice of generalized inverse we define
 \begin{equation}
 	\Sigma/\Sigma_{11} = \Sigma_{22} - \Sigma_{21}\Sigma_{11}^-\Sigma_{12}.
 \end{equation}
@@ -314,7 +315,7 @@ The next theorem characterizes positive symmetric matrices in terms of their Sch
 In equation (\ref{eqn.choice}) we defined $W$ using the inverse $E^{-1}$. We are now going to define $W$ using a general inverse instead. The next theorem shows that this again defines a positive semidefinite completion of $M$. The following theorems then show that the other properties also carry over to the semidefinite case.
 
 \begin{theorem}
-	Let $M$ be as in equation (\ref{eqn.corrmatrix}). Let both $M[\alpha]$ and $M[\beta]$ be positive semidefinite. Setting 
+	Let $M$ be as in equation (\ref{eqn.corrmatrix}). Let both $M[\alpha]$ and $M[\beta]$ be positive semidefinite. Let $E^-$ be a generalized inverse of $E$ that is also symmetric. Setting 
 	\begin{align}
 		W & = DE^-F \\
 		  & = M[ \alpha-\gamma, \gamma]M[\gamma]^-M[ \gamma, \beta-\gamma]		
@@ -341,6 +342,44 @@ In equation (\ref{eqn.choice}) we defined $W$ using the inverse $E^{-1}$. We are
 		\end{pmatrix} \ge 0
 	\end{align}
 	Using theorem \ref{theo.charact} in the other direction now yields the result. \qed
+\end{proof}
+
+We next look at the generalized inverse $M^+$ of $M$. It turns out that it can be uniquely expressed in terms of the Schur complement. This is a generalization of the Babachiewicz's result from equation (\ref{eqn.baba}) to the semidefinite case.
+
+\begin{theorem}
+	Let $\Sigma$ be a symmetric matrix partitioned as in equation (\ref{eqn.sigma}). Then we have
+	\begin{equation}
+		\Sigma^+ = \begin{pmatrix}\label{eqn.mpinverse}
+		\Sigma_{11}^{+} + \Sigma_{11}^{+}\Sigma_{12}(\Sigma/\Sigma_{11})^{+}\Sigma_{21}\Sigma_{11}^{+} &-\Sigma_{11}^{+} \Sigma_{12} (\Sigma/\Sigma_{11})^{+} \\ 
+		-(\Sigma/\Sigma_{11})^{+}\Sigma_{21}\Sigma_{11}^{+} & (\Sigma/\Sigma_{11})^{+}
+	\end{pmatrix}
+	\end{equation}
+	if and only if 
+	\begin{equation}\label{eqn.rank}
+			r(\Sigma) = r(\Sigma_{11}) + r(\Sigma_{22}).		
+	\end{equation}
+\end{theorem}
+
+\begin{proof}
+	See \cite[section 4]{ouellette} and \cite{horn}. \qed
+\end{proof}
+
+For a symmetric positive semidefinite matrix $\Sigma$ the condition on the rank of $\Sigma$ is automatically satisfied. We thus have the following corollary:
+
+\begin{corollary}\label{cor.inverse}
+	Let $\Sigma$ be symmetric and positive semidefinite. Then $\Sigma^+$ is given by equation (\ref{eqn.mpinverse}).
+\end{corollary}
+
+We can now state a unique property of our completion:
+
+\begin{theorem}
+	The completion defined by setting $W=DE^+F$ is the unique completion that turns $M$ into a symmetric positive semidefinite matrix and for which $M^+$ has zeroes in the places where $W$ used to be.
+\end{theorem} 
+
+The uniqueness result stated in \cite{smith} gives this result only for the positive definite case. This result shows that it is indeed also true for the positive semidefinite case.
+
+\begin{proof}
+	Because of the previous corollary \ref{cor.inverse} we see that for any completion $W$ that turns $M$ into a symmetric positive semidefinite matrix the Moore-Penrose inverse is given by equation (\ref{eqn.mpinverse}). This inverse has zeroes in exactly the places where $W$ used to be if and only if $W=DE^+F$. \qed	  
 \end{proof}
 
 
