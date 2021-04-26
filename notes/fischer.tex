@@ -1,0 +1,364 @@
+\documentclass[12pt, oneside]{article} 
+\usepackage[a4paper]{geometry}              
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+
+%SetFonts
+\usepackage[T1]{fontenc}
+\usepackage[bitstream-charter]{mathdesign}
+%SetFonts
+
+%define example environment 
+\newcounter{examplecounter}
+\newenvironment{example}%
+{%
+\small\begin{quote}%
+\refstepcounter{examplecounter}%
+\textbf{Example \arabic{examplecounter}}%
+\quad%
+}%
+{%\schluss%
+\end{quote}%
+}
+
+%define remark environment 
+\newcounter{remarkcounter}
+\newenvironment{remark}%
+{%
+\small\begin{quote}%
+\refstepcounter{remarkcounter}%
+\textbf{Remark \arabic{remarkcounter}}%
+\quad%
+}%
+{%\schluss%
+\end{quote}%
+}
+
+%define remark environment 
+\newcounter{questioncounter}
+\newenvironment{question}%
+{%
+\small\begin{quote}%
+\refstepcounter{questioncounter}%
+\textbf{Question \arabic{questioncounter}}%
+\quad%
+}%
+{%\schluss%
+\end{quote}%
+}
+
+
+%define important environment
+\newenvironment{important}{\begin{quote}%
+\textbf{Important:}%
+\quad
+}{%
+\end{quote}%
+}
+
+\newcommand{\qed}{\nobreak \ifvmode \relax \else
+      \ifdim\lastskip<1.5em \hskip-\lastskip
+      \hskip1.5em plus0em minus0.5em \fi \nobreak
+      \vrule height0.5em width0.5em depth0.25em\fi}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}{Definition}
+\newenvironment{proof}[1][Proof]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\range}{\text{\normalfont range}}
+\newcommand{\rank}{\text{\normalfont rank}}
+\newcommand{\fol}{\mathcal{F}}
+\newcommand{\one}{\mathbb{1}}
+\newcommand{\hest}{\textsc{Hesten}}
+\newcommand{\texp}{T_{\rm exp}}
+\newcommand{\detp}{{\det}_+}
+
+\usepackage{lettrine}
+
+\begin{document}
+\noindent{\Huge \textbf\textsf{{The generalized determinant and the Fischer's inequality}}}
+
+\noindent \textit{by Horst Köhler, Thomas Streuer, Olaf Dreyer}
+
+\vspace{.5cm}
+
+\section{Definition}
+We begin with the definition of the generalized determinant:
+
+\begin{definition}
+	Let $A\in M_n(\F)$ ($\F = \R$, or $\C$). Let $\lambda_1, \ldots, \lambda_n$ be the eigenvalues of $A$. Let $\lambda_i=0$ for $n\ge i>r\ge 0$. Then we call the product of the nonzero eigenvalues of $A$,
+	\begin{equation}
+		\detp A = \prod_{i=1}^r \lambda_i,
+	\end{equation}  
+	the generalized determinant of $A$. In the case of $r=0$ we set $\detp A = 1$.
+\end{definition}
+
+\begin{remark}
+	If $A$ is nonsingular we have $\detp A = \det A$.
+\end{remark}
+
+\begin{remark}
+	The generalized determinant does not share many of the properties with the usual determinant. While the determinant is a continuous function of $A$, the generalized determinant is not. This can be seen in the following simple example:
+	\begin{align}
+		1 & = \detp \begin{pmatrix}
+			0 & 0 \\
+			0 & 1
+		\end{pmatrix} \\
+		& \ne \lim_{\epsilon\rightarrow 0} \detp \begin{pmatrix}
+			\epsilon & 0 \\
+			0 & 1
+		\end{pmatrix} \\
+		& = 0
+	\end{align}
+	The determinant of a product is equal to the product of the determinants:
+	\begin{equation}
+		\det(AB) = \det(A)\det(B)
+	\end{equation} 
+	This is not true for the generalized determinant:
+	\begin{align}
+		\detp \left(\begin{pmatrix}
+			a & 0 \\
+			0 & 0
+		\end{pmatrix} \begin{pmatrix}
+			0 & 0 \\
+			0 & b
+		\end{pmatrix} \right) & = \detp \begin{pmatrix}
+			0 & 0 \\
+			0 & 0
+		\end{pmatrix} \\
+		& = 1 \\
+		& \ne \detp \begin{pmatrix}
+			a & 0 \\
+			0 & 0
+		\end{pmatrix} \detp \begin{pmatrix}
+			0 & 0 \\
+			0 & b
+		\end{pmatrix} \\
+		& = a b
+	\end{align}
+\end{remark}
+
+\section{Basic properties}
+The generalized determinant does have some interesting properties though. For the following we will restrict ourselves to the case of a Hermitian matrix $A$. The following lemma will allow us to infer some properties of the generalized determinant through a limit argument:
+
+\begin{lemma}
+	Let $A\in M_n(\C)$ be Hermitian with rank $r$. Then
+	\begin{equation}
+		\detp A = \lim_{\epsilon\rightarrow 0} \frac{\det(A + \epsilon I_n)}{\epsilon^{n-r}}
+	\end{equation}
+\end{lemma}
+
+\begin{proof}
+	Let $\lambda_1, ..., \lambda_n$ be the eigenvalues of $A$.  Since the rank of $A$ is $r$ there are $n-r$ that are equal to zero. Let us assume that $\lambda_i>0$, for $i=1, \ldots, r$. Then we have 
+	\begin{align}
+		\det(A + \epsilon I_n) & = \prod_i (\lambda_i + \epsilon) \\
+		 & = \epsilon^{n-r} \prod_{i=1}^r (\lambda_i + \epsilon)
+	\end{align} 
+	Since the generalized determinant is the product of the nonzero eigenvalues we obtain the equality by canceling the $\epsilon^{n-r}$ and taking the limit. \qed
+\end{proof}
+
+\begin{lemma}
+	We have the following properties (again, $r$ is the rank of $A$):
+	\begin{enumerate}
+		\item For $\rho\ne 0$ we have $\detp (\rho A) = \rho^{n-r} \detp (A)$. 
+		\item For $A\in M_n(\C)$ and $B\in M_m(\C)$ we have
+		\begin{equation}
+			\detp \begin{pmatrix}
+				A & 0 \\
+				0 & B 
+			\end{pmatrix} = \detp A\; \detp B.
+		\end{equation}
+		\item For any unitary $U$ we have 
+		\begin{equation}
+			\detp U A U^\star = \detp A.
+		\end{equation} 
+	\end{enumerate}
+\end{lemma}
+
+\section{Fischer's inequality}
+For a general Hermitian matrix 
+\begin{equation}
+	H = \begin{pmatrix}
+		A & B \\
+		B^\star & C 
+	\end{pmatrix} \in M_{n+m}(\C),
+\end{equation} 
+with $A\in M_n(\C), C\in M_m(\C)$, we have
+\begin{equation}
+	\det H \le \det A \det C,	
+\end{equation}
+with equality if and only if $B=0$. 
+
+\begin{remark}\label{rem.nofischer}
+	This inequality is not true for the generalized determinant. Let 
+	\begin{equation}
+		H = \begin{pmatrix}
+			0 & 1 \\
+			1 & b
+		\end{pmatrix}.
+	\end{equation}
+	Then we have $\detp H = \det H = -1$, but 
+	\begin{equation}
+		\detp 0\; \detp b = b.
+	\end{equation}
+	Choosing $b<-1$ gives a violation of the inequality for generalized determinants.
+\end{remark}
+
+A similar inequality is valid if we further restrict the class of matrices that we are dealing with. We will show that Fischer's inequality is valid for positive semidefinite matrices. The key ingredient that makes this possible is that these matrices have the \emph{row} and \emph{column inclusion property}. 
+
+\begin{definition}
+	For every $k=1, \ldots, n-1$ let $A\in M_n(\C)$ be partitioned as follows:
+	\begin{equation}
+	A = \begin{pmatrix}
+		A_{11} & A_{12} \\
+		A_{21} & A_{22}
+	\end{pmatrix},
+\end{equation}
+with $A_{11}\in M_k(\C)$. We say that $A$ satisfies the column inclusion property if for all $k$ we have $\range(A_{12})\subset\range(A_{11})$. The matrix $A$ has the row inclusion property if $A^\star$ has the column inclusion property.
+\end{definition}
+
+\begin{remark}\label{eqn.columnincl}
+	The following statements are equivalent:
+	\begin{enumerate}
+		\item $A$ has the column inclusion property.
+		\item If $\mathcal{N}(A)$ denotes the null space of the matrix $A$, then
+		\begin{equation}\label{eqn.nullincl}
+			\mathcal{N}(A_{11}^\star)\subset \mathcal{N}(A_{12}^\star).
+		\end{equation}
+		\item Every column of $A_{12}$ is a linear combination of the columns of $A_{11}$.
+		\item There is an $X\in M_{k,n-k}$ with $A_{12} = A_{11} X$.
+		\item $\rank(A_{11} A_{12}) = \rank(A_{11})$.
+	\end{enumerate}
+\end{remark}
+
+\begin{remark}
+	The matrix in the previous remark \ref{rem.nofischer} is not positive semidefinite and it does not have the row inclusion property.
+\end{remark}
+
+\begin{lemma}
+	Every positive semidefinite matrix $A$ has the row and column inclusion property.
+\end{lemma}
+
+\begin{proof}
+	Let $A$ be	
+	\begin{equation}
+	A = \begin{pmatrix}
+		A_{11} & A_{12} \\
+		A_{12}^\star & A_{22}
+	\end{pmatrix},
+	\end{equation}
+	(note that because $A$ is positive semidefinite it is also Hermitian). We will show that 
+	\begin{equation}
+		\mathcal{N}(A_{11})\subset \mathcal{N}(A_{12}^\star).
+	\end{equation}
+	(see remark \ref{eqn.columnincl}). Let $v\in \mathcal{N}(A_{11})$. Then for $w = (v,0)^T\in \C^n$ we have
+	\begin{equation}
+		w^\star A w = v^\star A_{11}v = 0.
+	\end{equation}
+	Since $A$ is positive semidefinite this implies that
+	\begin{equation}
+		A v = (A_{11}v, A_{12}^\star v)^T = 0,
+	\end{equation}
+	or $A_{12}^\star v=0$. \qed
+\end{proof}
+
+Let us note the following consequence:
+
+\begin{lemma}
+	Let $A$ be as above. Then we have
+	\begin{equation}
+		\rank\begin{pmatrix}
+			A_{11} \\
+			A_{12}^\star
+		\end{pmatrix} = \rank(A_{11}).
+	\end{equation}
+\end{lemma}
+
+\begin{proof}
+	Because $A$ is positive semidefinite we have
+	\begin{equation}\label{eqn.included}
+		\mathcal{N}(A_{11})\subset \mathcal{N}(A_{12}^\star).
+	\end{equation}
+	We then obtain:
+	\begin{align}
+				\rank\begin{pmatrix}
+			A_{11} \\
+			A_{12}^\star
+		\end{pmatrix} & = k - \dim\mathcal{N} \begin{pmatrix}
+			A_{11} \\
+			A_{12}^\star
+		\end{pmatrix} \\
+		& = k - \dim(\mathcal{N}(A_{11})\cap\mathcal{N}(A_{12}^\star))\label{eqn.cap}\\
+		& = k - \dim(\mathcal{N}(A_{11})) \label{eqn.cap1}\\
+		& = \rank(A_{11}).
+	\end{align}
+	To get to equation (\ref{eqn.cap1}) we have used equation (\ref{eqn.included}). \qed 
+\end{proof}
+
+The same result holds for $A_{22}$ and we obtain:
+
+\begin{lemma}
+	Let $A$ be as above then
+	\begin{equation}
+		\rank(A) \le \rank(A_{11}) + \rank(A_{12}). 
+	\end{equation}
+\end{lemma}
+
+\begin{proof}
+	We have
+	\begin{align}
+		\rank(A) & \le \rank\begin{pmatrix}
+			A_{11} \\
+			A_{12}^\star
+		\end{pmatrix} + \rank\begin{pmatrix}
+			A_{12} \\
+			A_{22}
+		\end{pmatrix} \\
+		& = \rank(A_{11}) + \rank(A_{22}). \qed
+	\end{align}
+\end{proof}
+
+From this we get the first version of the Fischer inequality:
+
+\begin{theorem}
+	Let $H\in M_n(\C)$ be a positive semidefinite matrix that is partitioned as follows:
+	\begin{equation}
+		H = \begin{pmatrix}
+			A & B \\
+			B^\star & C
+		\end{pmatrix},
+	\end{equation}
+	with $A\in M_k(\C)$ and $1\le k< n$. Assume that 
+	\begin{equation}\label{eqn.rankadd}
+		\rank(H) = \rank(A) + \rank(C), 
+	\end{equation}
+	then
+	\begin{equation}
+		\detp H \le \detp A\; \detp C
+	\end{equation}
+\end{theorem}
+
+\begin{proof}
+	Because of equation (\ref{eqn.rankadd}) we have
+	\begin{align}
+		\detp H & = \lim_{\epsilon\rightarrow 0} \frac{\det(H + \epsilon I_n)}{\epsilon^{n-\rank(H)}} \\
+		& \le \lim_{\epsilon\rightarrow 0} \frac{\det(A_{11} + \epsilon I_k)\det(A_{22} + \epsilon I_{n-k})}{\epsilon^{n-\rank(H)}} \\
+		& = \lim_{\epsilon\rightarrow 0} \frac{\det(A_{11} + \epsilon I_k)}{\epsilon^{k-\rank(A_{11})}}\cdot\frac{\det(A_{22} + \epsilon I_{n-k})}{\epsilon^{n-k-\rank(A_{22})}} \\
+		& = \detp A_{11}\; \detp A_{22}.
+	\end{align}
+	Which is the result. \qed
+\end{proof}
+ 
+
+
+\end{document}
