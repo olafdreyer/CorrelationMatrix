@@ -86,7 +86,7 @@
 \usepackage{lettrine}
 
 \begin{document}
-\noindent{\Huge \textbf\textsf{{The generalized determinant and the Fischer's inequality}}}
+\noindent{\Huge \textbf\textsf{{The generalized determinant and  Fischer's inequality}}}
 
 \noindent \textit{by Horst Köhler, Thomas Streuer, Olaf Dreyer}
 
@@ -181,6 +181,10 @@ The generalized determinant does have some interesting properties though. For th
 		\item For any unitary $U$ we have 
 		\begin{equation}
 			\detp U A U^\star = \detp A.
+		\end{equation}
+		\item If $\mathcal{N}(A)=\{0\}$, i.e. if $\rank(A)=n$ we have
+		\begin{equation}
+			\detp A = \det A.
 		\end{equation} 
 	\end{enumerate}
 \end{lemma}
@@ -245,7 +249,7 @@ with $A_{11}\in M_k(\C)$. We say that $A$ satisfies the column inclusion propert
 	The matrix in the previous remark \ref{rem.nofischer} is not positive semidefinite and it does not have the row inclusion property.
 \end{remark}
 
-\begin{lemma}
+\begin{lemma}\label{lem.columnincl}
 	Every positive semidefinite matrix $A$ has the row and column inclusion property.
 \end{lemma}
 
@@ -359,6 +363,126 @@ From this we get the first version of the Fischer inequality:
 	Which is the result. \qed
 \end{proof}
  
+\begin{remark}
+	A simple example illustrates the importance of the condition on the ranks. Let
+	\begin{equation}
+		H = \begin{pmatrix}
+			1 & a \\
+			a & a^2
+		\end{pmatrix}.
+	\end{equation}
+	Then $\det H = 0$ and $\detp H = 1 + a^2$ (the two eigenvalues of $H$ are $0$ and $1+a^2$ with eigenvectors $(a, -1)^T$ and $(1, a)^T$ respectively). For $a>0$ we have 
+	\begin{equation}
+		\detp 1\detp a^2 = a^2.
+	\end{equation}
+	$H$ is Hermitian and positive semidefinite but Fischer's inequality does not hold for the generalized determinant. Note that 
+	\begin{equation}
+		\rank(H) = 1,
+	\end{equation}
+	while $\rank(1) + \rank(a^2) = 2$. 
+\end{remark}
 
+\section{Improvement}
+We now want ti improve the theorem by dealing with case of equality:
+
+\begin{theorem}
+	Let $H$ be Hermitian and positive semidefinite and let $H$ be partitioned as follows:
+		\begin{equation}
+		H = \begin{pmatrix}
+			A & B \\
+			B^\star & C
+		\end{pmatrix},
+	\end{equation}
+	with $A\in M_k(\C)$ and $1\le k< n$. Assume that 
+	\begin{equation}\label{eqn.rankadd}
+		\rank(H) = \rank(A) + \rank(C), 
+	\end{equation}
+	then
+	\begin{equation}
+		\detp H \le \detp A\; \detp C,
+	\end{equation}
+	with equality if and only if $B=0$.
+\end{theorem}
+
+\begin{proof}
+	Since $A$ and $C$ are Hermitian there are unitary matrices $U=U^\star\in M_k(\C)$ and $V=V^\star\in M_{n-k}(\C)$ such that
+	\begin{align}
+		U A U^\star & = \begin{pmatrix}
+			\lambda_1 & 0 & 0 \\
+			0 & \ddots & 0 \\
+			0 & 0 & \lambda_k
+		\end{pmatrix} \\
+		& \nonumber \\
+		V C V^\star & = \begin{pmatrix}
+			\mu_1 & 0 & 0 \\
+			0 & \ddots & 0 \\
+			0 & 0 & \mu_{n-k}
+		\end{pmatrix}.
+	\end{align}
+	With
+	\begin{equation}
+		W = \begin{pmatrix}
+			U & 0 \\
+			0 & V
+		\end{pmatrix}
+	\end{equation}
+	we have
+	\begin{equation}
+		W H W^\star = \begin{pmatrix}
+ 	\begin{matrix}
+			\lambda_1 &  &  \\
+			 & \ddots &  \\
+			 &  & \lambda_k
+		\end{matrix} & UBV^\star \\
+		VB^\star U^\star & \begin{matrix}
+			\mu_1 &  &  \\
+			 & \ddots &  \\
+			 &  & \mu_{n-k}
+		\end{matrix}
+ 	\end{pmatrix}
+	\end{equation}
+	We now make use of the fact that $W H W^\star$ is positive semidefinite (since $H$ is positive semidefinite). Let $r_A$ be the rank of $A$ and $r_C$ be the rank of $C$. We assume that we have ordered the eigenvalues in such a way that 
+	\begin{equation}
+		\lambda_i = 0, \text{\ for\ } i>r_A,
+	\end{equation} 
+	and
+		\begin{equation}
+		\mu_j = 0, \text{\ for\ } j>r_C.
+	\end{equation}
+	Because $W H W^\star$ is positive semidefinite it follows that
+	\begin{equation}\label{eqn.lotsofzeroes}
+		(UBV^\star)_{i,j}=0, \text{\ for\ } i>r_A \text{\ or\ }j>r_C.
+	\end{equation}
+	Note the condition here. It is sufficient that either $i>r_A$ \emph{or} $j>r_C$ for $(UBV^\star)_{i,j}$ to vanish (this follows from lemma \ref{lem.columnincl}). 
+	
+	We now concentrate on the elements of $W H W^\star$ that are not zero. Let us define the following set of indices 
+	\begin{equation}
+		\iota = \{1,\ldots,r_A,k+1,\ldots,k+r_C\},
+	\end{equation}
+	and let us set $G = W H W^\star$. We have just established that
+	\begin{equation}
+		G[\iota^c] = 0.
+	\end{equation}
+	The remaining nonzero components are contained in $G[\iota]$. Because we are assuming that 
+	\begin{equation}
+		\rank(H) = \rank(A) + \rank(C),		
+	\end{equation}
+	and since 
+	\begin{equation}
+		\rank(G[\iota]) = \rank(H),	
+	\end{equation}
+	 $G[\iota]$ is a Hermitian positive definite matrix. Furthermore we have
+	 \begin{align}
+	 	\detp H & = \det G[\iota] \\
+	 	& \le \lambda_1\cdots\lambda_{r_A}\cdot\mu_1\cdots\mu_{r_C} \\
+	 	& = \detp A\; \detp C,
+	 \end{align}
+	 with equality if and only if the rest of $UBV^\star$ is zero. \qed
+\end{proof}
+
+
+\begin{remark}
+	Equation (\ref{eqn.lotsofzeroes}) is equivalent to $\mathcal{N}(C)\subset\mathcal{N}(B)$ and $\mathcal{N}(A)\subset\mathcal{N}(B^\star)$. These inclusions were established in lemma \ref{lem.columnincl}. 	
+\end{remark}
 
 \end{document}
