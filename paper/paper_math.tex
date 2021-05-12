@@ -1,0 +1,252 @@
+\documentclass[12pt, oneside]{article} 
+\usepackage[a4paper]{geometry}              
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+
+%SetFonts
+\usepackage[T1]{fontenc}
+\usepackage[bitstream-charter]{mathdesign}
+%SetFonts
+
+%define example environment 
+\newcounter{examplecounter}
+\newenvironment{example}%
+{%
+\small\begin{quote}%
+\refstepcounter{examplecounter}%
+\textbf{Example \arabic{examplecounter}}%
+\quad%
+}%
+{%\schluss%
+\end{quote}%
+}
+
+%define remark environment 
+\newcounter{remarkcounter}
+\newenvironment{remark}%
+{%
+\small\begin{quote}%
+\refstepcounter{remarkcounter}%
+\textbf{Remark \arabic{remarkcounter}}%
+\quad%
+}%
+{%\schluss%
+\end{quote}%
+}
+
+%define remark environment 
+\newcounter{questioncounter}
+\newenvironment{question}%
+{%
+\small\begin{quote}%
+\refstepcounter{questioncounter}%
+\textbf{Question \arabic{questioncounter}}%
+\quad%
+}%
+{%\schluss%
+\end{quote}%
+}
+
+
+%define important environment
+\newenvironment{important}{\begin{quote}%
+\textbf{Important:}%
+\quad
+}{%
+\end{quote}%
+}
+
+\newcommand{\qed}{\nobreak \ifvmode \relax \else
+      \ifdim\lastskip<1.5em \hskip-\lastskip
+      \hskip1.5em plus0em minus0.5em \fi \nobreak
+      \vrule height0.5em width0.5em depth0.25em\fi}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}{Definition}
+\newenvironment{proof}[1][Proof]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\fol}{\mathcal{F}}
+\newcommand{\one}{\mathbb{1}}
+\newcommand{\rank}{\text{rank}}
+\newcommand{\detp}{{\det}_+}
+
+\usepackage{lettrine}
+
+\begin{document}
+\noindent{\Huge \textbf\textsf{{Matrix completion and semi-definite matrices.}}}
+
+\noindent \textit{by Horst Köhler, Thomas Streuer, Olaf Dreyer}
+
+\vspace{.5cm}
+
+\section{Introduction}
+
+\section{Partitioned matrices of maximal rank}\label{sec.partition}
+Let the Hermitian matrix $H\in M_n(\C)$ be partitioned as follows:
+\begin{equation}
+	H = \begin{pmatrix}\label{eqn.defh}
+		A & B \\
+		B^\star & C
+	\end{pmatrix},
+\end{equation}
+with $A\in M_k(\C)$, $1\le k\le n-1$. Let $V = K\oplus L$ be the decomposition of $V\simeq \C^n$ in accordance with the partition of $H$ in equation (\ref{eqn.defh}) so that $A$ is a map from $K$ to $K$, and $C$ is a map from $L$ to $L$. Let us further assume that $H$ is positive semi-definite. Let $k\in N(A)\subset K$, i.e. let $A k = 0$. For $v=(k,0)^T\in V$ we then have 
+\begin{equation}
+	v^\star H v=0.
+\end{equation}
+Since $H$ is positive semi-definite this implies (see \cite{matrixanalysis}) that we already have
+\begin{equation}
+	Hv = 0,
+\end{equation}
+or 
+\begin{equation}\label{eqn.nulla}
+	N(A) \subset N(B^\star).
+\end{equation}
+In a similar fashion we can establish that the null space of $C$ is contained in the null space of $B$:
+\begin{equation}\label{eqn.nullc}
+	N(C) \subset N(B).
+\end{equation}
+The relations for the null spaces are equivalent to these relations for the ranges:
+\begin{align}
+	R(B) & \subset R(A) \\
+	R(B^\star) & \subset R(C).
+\end{align}
+Because of these properties $H$ is said to have the \emph{column inclusion property}\cite{matrixanalysis}. It follows from equations (\ref{eqn.nulla}) and (\ref{eqn.nullc}) that 
+\begin{equation}
+	N(A) \oplus N(C) \subset N(H).
+\end{equation}
+This implies that the rank of $H$ is less than or equal to the sum of the ranks of $A$ and $C$:
+\begin{align}
+	\rank\ H & = n - \dim N(H) \\
+	& \le n - (\dim N(A) + \dim N(C)) \\
+	& = k-\dim N(A) + (n-k) - \dim N(C) \\
+	& = \rank\ A + \rank\ C
+\end{align}
+We have equality if and only if $N(H) = N(A)\oplus N(C)$. In the following, matrices $H$ for which this equality holds, will be of particular interest to us which is why we make the following definition:
+
+\begin{definition}
+	Let $H$ be a positive semi-definite Hermitian matrix that is partitioned as in equation (\ref{eqn.defh}). We say that $H$ is of \emph{maximal rank} if and only if $N(H) = N(A)\oplus N(C)$. 
+\end{definition}
+
+When $H$ is of maximal rank, it vanishes on
+\begin{equation}
+	N(A)\oplus N(C),
+\end{equation}
+and is positive definite when restricted to the sum of the ranges of $A$ and $C$:
+\begin{equation}
+	R(A) \oplus R(C).
+\end{equation} 
+We will use this property to extend results that are valid for positive definite matrices to matrices of maximal rank. Before we can state these results we need to introduce one more notion.
+
+\section{The generalized determinant}\label{sec.gendet}
+A Hermitian matrix $H$ defines a non-singular map from its range $R(H)$ to its range $R(H)$. If $H$ is singular its determinant vanishes. The determinant thus contains no information about $H$ restricted to $R(H)$. To recover this information we introduce a generalized determinant $\detp$:
+
+\begin{definition}\label{def.gendet}
+	Let $H$ be Hermitian. Let $\bar H$ be $H$ restricted to the range of $H$:
+	\begin{equation}
+		\bar H = H \vert_{R(H)} : R(H) \longrightarrow R(H) \\
+	\end{equation}
+	For $H\ne 0$ we then set 
+	\begin{equation}
+		\detp H = \det \bar H.
+	\end{equation}
+	For $H=0$ we set $\detp H = 1$.
+\end{definition}
+
+We note a number of properties of the generalized determinant:
+
+\begin{lemma}
+	Let $H$ be Hermitian of rank $r\le n$. Let $\lambda_i, i=1, \ldots, n$, be the eigenvalues of $H$. Let us assume that they are ordered in such a way that $\lambda_i = 0$, for $i>r$. We then have:
+	\begin{enumerate}
+		\item If $H$ is of full rank (i.e. if $r=n$) we have
+		\begin{equation}
+			\detp H = \det H = \prod_i \lambda_i
+		\end{equation}
+		\item For $r<n$ we have
+		\begin{equation}
+			\detp H = \prod_{i=1}^r \lambda_i
+		\end{equation}
+		\item We have
+		\begin{equation}
+			\detp H = \lim_{\epsilon \rightarrow 0} \frac{\det( H + \epsilon I )}{\epsilon^{n-r}}
+		\end{equation}
+		\item For $c>0$ we have
+		\begin{equation}
+			\detp c H = c^{r} \detp H
+		\end{equation}
+	\end{enumerate}   
+\end{lemma}
+
+\begin{proof}
+	All of these identities follow from the fact that $H = U D U^\star$ for a unitary $U$ and a diagonal $D$ that contains the eigenvalues of $H$ on the diagonal. \qed
+\end{proof}
+
+We note that the generalized determinant does not have many properties the usual determinant has. In particular, it is not a continuous function of $H$, and the generalized determinant of the product of two matrices is not the product of the two determinants. 
+
+\section{The extensions}\label{sec.ext}
+With the preparations in section \ref{sec.partition} and the definition of the generalized determinant we now want to extent three results: Fischer's inequality, the determinant equality for Schur's complement, and Babachiewicz's form of the inverse of a matrix.
+
+\subsection{Fischer's inequality}
+Fischer's inequality states that for a Hermitian positive semidefinite $H$ as in equation (\ref{eqn.defh}) we have 
+\begin{equation}
+	\det H \le \det A\; \det C.
+\end{equation}
+If $H$ is positive definite, we have equality if and only if $B=0$. If $H$ is singular, the determinant of $H$ vanishes and the inequality is no longer much of a constraint. We can also no longer infer that $B=0$ in the case of equality. 
+
+We can do better when $H$ is of maximal rank. In this case $H$ vanishes on $N(A)\oplus N(C)$ and is positive definite on 
+\begin{equation}
+	R(A)\oplus R(C).
+\end{equation}
+We now look at the restriction of $H$ and all its sub-matrices to this space and use the usual Fischer inequality there. As in definition \ref{def.gendet}, we denote the restriction of $H$ to its range by $\bar H$. We obtain
+\begin{align}
+	\detp H & = \det \bar H \\
+	&\le \det \bar A\; \det \bar C \\
+	& = \detp A\; \detp C.
+\end{align}
+Because we are looking at the restriction of $H$ to $R(A)\oplus R(C)$ and because it is positive definite on $R(A)\oplus R(C)$, we also get that $B$, when restricted to $R(C)$, vanishes if and only if equality holds above. Since $B$ vanishes on $N(C)$, this is the case if and only if
+\begin{equation}
+	B = 0.
+\end{equation}
+We thus have the following result:
+
+\begin{theorem}
+	Let a Hermitian $H$ be positive semidefinite and partitioned as in equation (\ref{eqn.defh}). If $H$ is of maximal rank then
+	\begin{equation}
+		\detp H \le \detp A\; \detp C,
+	\end{equation} 
+	with equality if and only if $B = 0$. 
+\end{theorem}
+
+\subsection{Schur complement}
+
+
+
+\section{Matrix completion}
+
+\section{Conclusion}
+
+\begin{thebibliography}{MM}
+	\bibitem{matrixanalysis} Roger A. Horn, Charles R. Johnson, \emph{Matrix Analysis}, 2nd Edition, Cambridge University Press, 2013.
+	\bibitem{hayns} Emilie Virginia Haynsworth, Determination of the inertia of a partitioned Hermitian matrix,  Linear  Algebra and its Applications \textbf{1}, 1968, 73--81. 
+	\bibitem{horn} Roger A. Horn, Basic  Properties  of  the  Schur  Complement. In Fuzhen Zhang (Ed.) The Schur complement and its application (17--46). Springer, 2005.
+	\bibitem{rao} C. Radharkishna Rao, Linear Statistical Inference and its Applications, 2nd edition, John Wiley \& Sons, Inc, 2002.
+	\bibitem{cottle} Richard W. Cottle, Manifestations of the Schur complement, Linear Algebra and its Applications \textbf{8}, 1974, 189--211. 
+	\bibitem{smith} Smith, R. (2008). The positive definite completion problem revisited Linear Algebra and its Applications  429(7), 1442-1452. https://dx.doi.org/10.1016/j.laa.2008.04.020
+	\bibitem{ouellette} Ouellette, D. (1981). Schur complements and statistics Linear Algebra and its Applications  36, 187-295. https://dx.doi.org/10.1016/0024-3795(81)90232-9
+	\bibitem{roger} Penrose, R. (1955). A generalized inverse for matrices Mathematical Proceedings of the Cambridge Philosophical Society  51(3), 406-413. https://dx.doi.org/10.1017/s0305004100030401
+	\bibitem{albert} Albert, A. (1969). Conditions for Positive and Nonnegative Definiteness in Terms of Pseudoinverses SIAM Journal on Applied Mathematics  17(2), 434-440. https://dx.doi.org/10.1137/0117041
+\end{thebibliography}
+
+\appendix
+
+\section{Maybe ...}
+
+\end{document}
