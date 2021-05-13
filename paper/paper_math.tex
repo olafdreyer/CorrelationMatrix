@@ -144,7 +144,7 @@ and is positive definite when restricted to the sum of the ranges of $A$ and $C$
 \begin{equation}
 	R(A) \oplus R(C).
 \end{equation} 
-We will use this property to extend results that are valid for positive definite matrices to matrices of maximal rank. Before we can state these results we need to introduce one more notion.
+We will use this property to extend results that are valid for positive definite matrices to partitioned matrices of maximal rank. Before we can state these results we need to introduce one more notion.
 
 \section{The generalized determinant}\label{sec.gendet}
 A Hermitian matrix $H$ defines a non-singular map from its range $R(H)$ to its range $R(H)$. If $H$ is singular its determinant vanishes. The determinant thus contains no information about $H$ restricted to $R(H)$. To recover this information we introduce a generalized determinant $\detp$:
@@ -225,8 +225,43 @@ We thus have the following result:
 	with equality if and only if $B = 0$. 
 \end{theorem}
 
-\subsection{Schur complement}
+Let us note that we arrived at this result in two steps. Because $H$ is positive semidefinite we know that $B$ restricted to $N(C)$ is zero. That the restriction of $B$ to the range $R(C)$ is also zero follows from Fischer's equality for the positive definite matrix that is $H$ restricted to $R(A)\oplus R(C)$.
 
+\subsection{Schur complement}
+We now turn our attention to the Schur complement. For a positive definite $H$ Schur showed that
+\begin{equation}
+	\det H = \det A\; \det H/A.
+\end{equation}
+We again focus our attention on $R(A)\oplus R(C)$, where $H$ is positive definite. Using the notation from the previous section we obtain:
+\begin{align}
+	\detp H & = \det \bar H \\
+	& = \det \bar A \; \det \bar H / \bar A \\
+	& = \detp A  \; \det \bar H / \bar A
+\end{align}
+We need to convince ourselves that the last determinant is equal to $\detp H/A$. To check this we need to show that 
+\begin{equation}
+	N(H/A) = N(C).
+\end{equation}
+We already know that $N(C) \subset N(H/A)$. To show the other inclusion let $l\in N(N/A)$ and set
+\begin{equation}
+	k = - A^+ B l.
+\end{equation}
+It then follows that 
+\begin{equation}
+	H\begin{pmatrix}
+		k\\
+		l
+	\end{pmatrix} = 0.
+\end{equation}
+Since $H$ is of maximal rank this implies that $(k,l)^T\in N(A)\oplus N(C)$. In particular, we have $w\in N(C)$. We thus obtain our second result:
+
+\begin{theorem} Let a Hermitian $H$ be positive semidefinite and partitioned as in equation (\ref{eqn.defh}). If $H$ is of maximal rank then
+	\begin{equation}
+		\detp H = \detp A\; \detp H/A.
+	\end{equation}	
+\end{theorem}
+
+\subsection{The inverse}
 
 
 \section{Matrix completion}
@@ -235,6 +270,7 @@ We thus have the following result:
 
 \begin{thebibliography}{MM}
 	\bibitem{matrixanalysis} Roger A. Horn, Charles R. Johnson, \emph{Matrix Analysis}, 2nd Edition, Cambridge University Press, 2013.
+	\bibitem{schur} J. Schur, Über Potenzreihen, die im Innern des Einheitskreises beschränkt sind, Journal für die reine und angewandte Mathematik \textbf{147}, 205 -- 232, 1917.
 	\bibitem{hayns} Emilie Virginia Haynsworth, Determination of the inertia of a partitioned Hermitian matrix,  Linear  Algebra and its Applications \textbf{1}, 1968, 73--81. 
 	\bibitem{horn} Roger A. Horn, Basic  Properties  of  the  Schur  Complement. In Fuzhen Zhang (Ed.) The Schur complement and its application (17--46). Springer, 2005.
 	\bibitem{rao} C. Radharkishna Rao, Linear Statistical Inference and its Applications, 2nd edition, John Wiley \& Sons, Inc, 2002.
