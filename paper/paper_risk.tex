@@ -1,0 +1,212 @@
+\documentclass[12pt, oneside]{article} 
+\usepackage[a4paper]{geometry}              
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+
+%SetFonts
+\usepackage[T1]{fontenc}
+\usepackage[bitstream-charter]{mathdesign}
+%SetFonts
+
+%define example environment 
+\newcounter{examplecounter}
+\newenvironment{example}%
+{%
+\small\begin{quote}%
+\refstepcounter{examplecounter}%
+\textbf{Example \arabic{examplecounter}}%
+\quad%
+}%
+{%\schluss%
+\end{quote}%
+}
+
+%define remark environment 
+\newcounter{remarkcounter}
+\newenvironment{remark}%
+{%
+\small\begin{quote}%
+\refstepcounter{remarkcounter}%
+\textbf{Remark \arabic{remarkcounter}}%
+\quad%
+}%
+{%\schluss%
+\end{quote}%
+}
+
+%define remark environment 
+\newcounter{questioncounter}
+\newenvironment{question}%
+{%
+\small\begin{quote}%
+\refstepcounter{questioncounter}%
+\textbf{Question \arabic{questioncounter}}%
+\quad%
+}%
+{%\schluss%
+\end{quote}%
+}
+
+
+%define important environment
+\newenvironment{important}{\begin{quote}%
+\textbf{Important:}%
+\quad
+}{%
+\end{quote}%
+}
+
+\newcommand{\qed}{\nobreak \ifvmode \relax \else
+      \ifdim\lastskip<1.5em \hskip-\lastskip
+      \hskip1.5em plus0em minus0.5em \fi \nobreak
+      \vrule height0.5em width0.5em depth0.25em\fi}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}{Definition}
+\newenvironment{proof}[1][Proof]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\fol}{\mathcal{F}}
+\newcommand{\one}{\mathbb{1}}
+\newcommand{\rank}{\text{rank}}
+\newcommand{\detp}{{\det}_+}
+
+\usepackage{lettrine}
+
+\begin{document}
+\noindent{\Huge \textbf\textsf{{Completing correlation matrices}}}
+
+\noindent \textit{by Horst Köhler, Thomas Streuer, Olaf Dreyer}
+
+\vspace{.5cm}
+
+\section{Introduction}
+
+\section{The completion criterium}
+Given an incomplete correlation matrix what is the right way to complete it? To motivate the answer we need to introduce some notation. Let 
+\begin{equation}
+	X = ( x_1, \ldots, x_k )^T\in \R^k
+\end{equation}
+be a $k$ dimensional random variable with a density function given by a $k$ dimensional normal distribution
+\begin{align}
+	f(X) & = N_k[\mu, H_X]( X ) \\
+	& = (2\pi)^{-k/2}\det(H_X)^{-1/2}\exp\left(-\frac{1}{2}(X -\mu)^T H_X^{-1} (X-\mu)\right),
+\end{align}
+with mean $\mu$ and covariance matrix $H$. A crucial property of the normal distribution is that we condition on some of the $x_i$, $i=1, \dots, k$, we again obtain a normal distribution. Assume that we want to condition on the last $l$ components of $X$:
+\begin{equation}
+	Z = (x_{k-l+1}, \ldots, x_k)^T \in \R^l.
+\end{equation}
+Let us partition the matrix $H$ in a way that reflects this partition of $X$:
+\begin{equation}
+	H_X = \begin{pmatrix}
+		A & B \\
+		B^T & C
+	\end{pmatrix},
+\end{equation}
+with $A\in M_{k-l}$, $C\in M_l$, and $B\in M_{k-l,l}$. Let $\bar X$ be the first $k-l$ components of $X$:
+\begin{equation}
+	\bar X = (x_1, \ldots, x_{k-l})^T\in \R^{k-l}
+\end{equation}
+Let us also assume that $X$ has zero mean:
+\begin{equation}
+	\mu = 0
+\end{equation}
+The density function for $X$ conditioned on $Z$ is then given by
+\begin{equation}
+	f(X \vert Z ) = N_{k-l}[BC^{-1}Z, H_X/C ](\bar X),
+\end{equation}
+(see \cite[chapter 8]{rao} and \cite{cottle}) where $H_X/C$ is the Schur complement of $C$ in $H_X$:
+\begin{equation}\label{eqn.hxc}
+	H_X/C = A - B C^{-1}B^T
+\end{equation}
+(Emilie Haynsworth introduced the name and highlighted its usefulness in \cite{hayns}. Schur originally made use of it in \cite{schur}. For an overview of the properties of the Schur complement see \cite{horn}.) We see that we again obtain a normal distribution. We will see the Schur complement again soon.
+
+Now let us look at a second set of random variables 
+\begin{equation}
+	Y = (x_{k-l+1}, \ldots, x_k, x_{k+1}, \ldots, x_n)^T \in \R^{n-k},
+\end{equation}
+that has an overlap $Z$ with the random variables $X$. Let the density function for $Y$ be given by
+\begin{equation}
+	f(Y) = N_{n-k}[0,H_Y] ( Y),
+\end{equation}
+with
+\begin{equation}
+	H_Y = \begin{pmatrix}
+		C & D \\
+		D^T & E
+	\end{pmatrix}.
+\end{equation}
+Note that the submatrix $C$ is shared with $H_X$. In our context the matrix might have been obtained by a previous calibration of a model that is part of both $X$ and $Y$. If we were to condition on $Z$ we would find
+\begin{equation}
+	f(Y\vert Z) = N_{n-k-l}[ D^T C^{-1}Z,H_Y/C](\bar Y), 
+\end{equation}
+with
+\begin{equation}\label{eqn.hyc}
+	H_Y/C = E - D^TC^{-1}D
+\end{equation}
+and $\bar Y$ is the part of $Y$ that is not $Z$. If we want to describe $X$ and $Y$ together we are looking at the matrix
+\begin{equation}
+	H = \begin{pmatrix}
+		A & B & W \\
+		B^T & C & D \\
+		W^T & D^T & E
+	\end{pmatrix},
+\end{equation}
+with a yet to be determined matrix $W\in M_{k-l,n-l}$. Because $X$ and $Y$ share the random variables in $Z$ we can not make them independent. The next best thing that we can do is to demand that if we fix $Z$ the remaining parts of $X$ and $Y$ are independent. The combined density for $X$ and $Y$ when we condition on $Z$ is given by
+\begin{equation}
+	f( X,Y\vert Z) = N_{n-l}[ (B^T,D)^TC^{-1}Z, H/C](\bar X, \bar Y),
+\end{equation}
+with
+\begin{align}
+	H/C & = \begin{pmatrix}
+		A - B C^{-1}B^T & W - B C^{-1} D \\
+		W^T - D^TC^{-1}B^T & E - D^TC^{-1}D
+	\end{pmatrix}\\
+  & = \begin{pmatrix}
+		H_X/C & W - B C^{-1} D \\
+		W^T - D^TC^{-1}B^T & H_Y/C
+	\end{pmatrix}.
+\end{align}
+We see that if we set
+\begin{equation}
+	W = BC^{-1}D
+\end{equation}
+the above matrix becomes block diagonal and the conditional densities obey
+\begin{equation}
+	f(X,Y\vert Z ) = f(X\vert Z)f(Y\vert Z)
+\end{equation}
+because the blocks in the diagonal are $H_X/C$ and $H_Y/C$ from equations (\ref{eqn.hxc}) and (\ref{eqn.hyc}). Given that $Z$ is part of both $X$ and $Y$ this is as much independence as we can ask for.
+
+\section{Conclusion}
+
+\begin{thebibliography}{MM}
+	\bibitem{rao} C. Radharkishna Rao, Linear Statistical Inference and its Applications, 2nd edition, John Wiley \& Sons, Inc, 2002.
+	\bibitem{cottle} Richard W. Cottle, Manifestations of the Schur complement, Linear Algebra and its Applications \textbf{8}, 1974, 189--211. 
+	\bibitem{hayns} Emilie Virginia Haynsworth, Determination of the inertia of a partitioned Hermitian matrix,  Linear  Algebra and its Applications \textbf{1}, 1968, 73--81.
+	\bibitem{schur} J. Schur, Über Potenzreihen, die im Innern des Einheitskreises beschränkt sind, Journal für die reine und angewandte Mathematik \textbf{147}, 205 -- 232, 1917.
+	\bibitem{horn} Roger A. Horn, Basic  Properties  of  the  Schur  Complement. In Fuzhen Zhang (Ed.) The Schur complement and its application (17--46). Springer, 2005.
+
+	% older stuff
+	\bibitem{matrixanalysis} Roger A. Horn, Charles R. Johnson, \emph{Matrix Analysis}, 2nd Edition, Cambridge University Press, 2013.
+	\bibitem{schur} J. Schur, Über Potenzreihen, die im Innern des Einheitskreises beschränkt sind, Journal für die reine und angewandte Mathematik \textbf{147}, 205 -- 232, 1917.
+	\bibitem{bana} T. Banachiewicz, Zur Berechnung der Determinanten, wie auch der Inversen, und zur darauf basierten Auflösung der Systeme linearer Gleichungen, Acta Astronom. S\'er. C 3, 41--67, 1937.
+	\bibitem{frazer} Frazer, R., Duncan, W., Collar, A. (1938). Elementary Matrices And Some Applications To Dynamics And Differential Equations, Cambridge University Press, 1938.
+	\bibitem{ouellette} Ouellette, D. (1981). Schur complements and statistics Linear Algebra and its Applications  36, 187-295. https://dx.doi.org/10.1016/0024-3795(81)90232-9
+	\bibitem{albert} Albert, A. (1969). Conditions for Positive and Nonnegative Definiteness in Terms of Pseudoinverses SIAM Journal on Applied Mathematics  17(2), 434-440. https://dx.doi.org/10.1137/0117041
+	\bibitem{smith} Smith, R. (2008). The positive definite completion problem revisited Linear Algebra and its Applications  429(7), 1442-1452. https://dx.doi.org/10.1016/j.laa.2008.04.020	
+	\bibitem{roger} Penrose, R. (1955). A generalized inverse for matrices Mathematical Proceedings of the Cambridge Philosophical Society  51(3), 406-413. https://dx.doi.org/10.1017/s0305004100030401
+\end{thebibliography}
+
+\appendix
+
+\section{Maybe ...}
+
+\end{document}
