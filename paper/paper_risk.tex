@@ -100,11 +100,11 @@ be a $k$ dimensional random variable with a density function given by a $k$ dime
 	f(X) & = N_k[\mu, H_X]( X ) \\
 	& = (2\pi)^{-k/2}\det(H_X)^{-1/2}\exp\left(-\frac{1}{2}(X -\mu)^T H_X^{-1} (X-\mu)\right),
 \end{align}
-with mean $\mu$ and covariance matrix $H$. A crucial property of the normal distribution is that we condition on some of the $x_i$, $i=1, \dots, k$, we again obtain a normal distribution. Assume that we want to condition on the last $l$ components of $X$:
+with mean $\mu$ and covariance matrix $H$. A crucial property of the normal distribution is that if we condition on some of the $x_i$, $i=1, \dots, k$, we again obtain a normal distribution. Assume that we want to condition on the last $l$ components of $X$:
 \begin{equation}
 	Z = (x_{k-l+1}, \ldots, x_k)^T \in \R^l.
 \end{equation}
-Let us partition the matrix $H$ in a way that reflects this partition of $X$:
+We partition the matrix $H$ in a way that reflects this partition of $X$:
 \begin{equation}
 	H_X = \begin{pmatrix}
 		A & B \\
@@ -115,11 +115,7 @@ with $A\in M_{k-l}$, $C\in M_l$, and $B\in M_{k-l,l}$. Let $\bar X$ be the first
 \begin{equation}
 	\bar X = (x_1, \ldots, x_{k-l})^T\in \R^{k-l}
 \end{equation}
-Let us also assume that $X$ has zero mean:
-\begin{equation}
-	\mu = 0
-\end{equation}
-The density function for $X$ conditioned on $Z$ is then given by
+If we assume that $X$ has zero mean (i.e. $\mu=0$), the density function for $X$ conditioned on $Z$ is then given by
 \begin{equation}
 	f(X \vert Z ) = N_{k-l}[BC^{-1}Z, H_X/C ](\bar X),
 \end{equation}
@@ -152,7 +148,7 @@ with
 \begin{equation}\label{eqn.hyc}
 	H_Y/C = E - D^TC^{-1}D
 \end{equation}
-and $\bar Y$ is the part of $Y$ that is not $Z$. If we want to describe $X$ and $Y$ together we are looking at the matrix
+and $\bar Y$ is the part of $Y$ that is not $Z$. If we now want to describe $X$ and $Y$ together we are looking at the matrix
 \begin{equation}
 	H = \begin{pmatrix}
 		A & B & W \\
@@ -176,14 +172,98 @@ with
 	\end{pmatrix}.
 \end{align}
 We see that if we set
-\begin{equation}
+\begin{equation}\label{eqn.choice}
 	W = BC^{-1}D
 \end{equation}
 the above matrix becomes block diagonal and the conditional densities obey
-\begin{equation}
+\begin{equation}\label{eqn.independent}
 	f(X,Y\vert Z ) = f(X\vert Z)f(Y\vert Z)
 \end{equation}
-because the blocks in the diagonal are $H_X/C$ and $H_Y/C$ from equations (\ref{eqn.hxc}) and (\ref{eqn.hyc}). Given that $Z$ is part of both $X$ and $Y$ this is as much independence as we can ask for.
+because the blocks in the diagonal are $H_X/C$ and $H_Y/C$ from equations (\ref{eqn.hxc}) and (\ref{eqn.hyc}). Given that $Z$ is part of both $X$ and $Y$ this is as much independence as we can ask for. The way to choose the matrix $W$ and complete $H$ is to demand that $X$ and $Y$, when conditioned on their shared part $Z$, are independent.
+
+This choice of $W$ can be characterized in two more ways. Banachiewicz showed that the inverse of a matrix could be expressed using the Schur complement. Since the Schur complement $H/C$ is block diagonal the inverse of $H$ is given by
+\begin{equation}
+	H^{-1} = \begin{pmatrix}
+		(H_X/C)^{-1} & -(H_X/C)^{-1} B C^{-1} & 0 \\
+		- C^{-1} B^T (H_X/C)^{-1} & \Xi & - C^{-1} D (H_Y/C)^{-1} \\
+		0 & - (H_Y/C)^{-1} D^T C^{-1} & (H_Y/C)^{-1} 
+	\end{pmatrix},
+\end{equation}
+with
+\begin{equation}
+\Xi = C^{-1} + C^{-1} B^T (H_X/C)^{-1} B C^{-1} + C^{-1} D (H_Y/C)^{-1} D^T C^{-1}.
+\end{equation}
+We see that $H^{-1}$ has zeroes in the places where $W$ sits in $H$. The $W$ from equation (\ref{eqn.choice}) is the unique choice with that property.  
+
+When looking at the determinant of $H$ we find another characterization of $W$. Using the Schur complement again, we find
+\begin{align}
+	\det H & = \det C \; \det H/C \\
+	& \le \det C \; \det H_X/C \; \det H_Y/C,\label{eqn.fischer}
+\end{align}
+where we have equality in equation (\ref{eqn.fischer}) if and only if the off-diagonal blocks vanish, i.e. if and only if $W$ is given by equation (\ref{eqn.choice}). This choice of $W$ is the unique choice that maximizes the determinant of $H$.
+
+The entropy $S$ of the normal distribution $N_n[\mu,H]$ is given by
+\begin{equation}
+	S = \frac{1}{2}\log \det H + \text{\ const.}
+\end{equation} 
+Because we are maximizing the determinant of $H$ we are also maximizing the entropy $S$ of the distribution described by $H$. The $H$ chosen by the $W$ from equation (\ref{eqn.choice}) is the one that puts the fewest constraints on the distribution of $X$ and $Y$.
+
+\section{The completion procedure}
+In the last section we have completed the matrix $H$ in the very simple case where there are two known matrices $H_X$ and $H_Y$ with just one shared part $C$. The general case is usually not this simple. Building on the result in \cite{grone} Smith \cite{smith} (see also \cite{ksd} for a more general treatment of the semidefinite case) showed how to solve the general problem by reducing it to a repeated application of the result from the previous section. We will discuss the required steps in this section by looking at a particular example, the cross currency model.
+
+Our model will consist of two interest rate models for the base currency $E$ and the foreign currency $A$. These two currencies are linked by an exchange rate $X$. We will model the two interest rates and the exchange rate with stochastic volatility models so that we have a total of six stochastic variables:
+\begin{equation}\label{eqn.stochvar}
+	E, \nu_E, A, \nu_A, X, \nu_X
+\end{equation}
+We will denote the corresponding correlation coefficients by 
+\begin{equation}
+	(a,b),
+\end{equation}
+where $a$ and $b$ are one of the stochastic variables from equation (\ref{eqn.stochvar}). In total there are 15 different correlation coefficients in the correlation matrix $H$ of our model. We assume that the coefficients 
+\begin{equation}
+	(E,\nu_E)\text{\ and\ }(A,\nu_A)
+\end{equation}
+have already been determined in separate calibrations of the interest rate models. That leaves us with 13 free coefficients in $H$. This number of coefficients is too large for a stable calibration. Instead we will calibrate the coefficients
+\begin{equation}
+	(E,A), (E,X), (A,X),(X,\nu_X),
+\end{equation}
+and determine the remaining nine coefficients using the completion procedure (see figure \ref{fig.xccymodel}).
+
+\begin{figure}[hbt]
+  \begin{center}
+  	\includegraphics[width=10cm]{img/xccymodel.png}
+  \end{center}
+  \caption{The correlation matrix for the cross currency model. The coefficients $(x_E, \nu_E)$ and $(x_A, \nu_A)$ (the boxes with the solid lines) will be determined in two separate interest rate calibrations. The coefficients $(x_E, X_E^A)$, $(x_E, x_A)$, $(x_A, X_E^A)$, and $(X_E^A, \nu_{EA})$ (the boxes with the dashed lines) will be determined in the cross currency calibration itself. The rest will be determined using the completion procedure.}\label{fig.xccymodel}
+\end{figure}
+
+The first step to complete the matrix $H$ is to determine the graph corresponding to $H$. The vertices of the graph are given by the row (or column) indices of $H$. In our case these are identified with the stochastic variables in equation (\ref{eqn.stochvar}). We then obtain the graph for $H$ by connecting the vertices for which we have coefficients. I n our example we obtain the graph in figure \ref{fig.fxCalibrationGraph}.
+
+\begin{figure}[hbt]
+  \begin{center}
+  	\includegraphics[width=10cm]{img/fxCalibrationGraph.png}
+  \end{center}
+  \caption{The initial graph for the cross currency calibration. The coefficients $(E,\nu_E)$ and $(A,\nu_A)$ (dashed edges) are determined in separate interest rate calibrations. The other edges are determined in the cross currency calibration itself.}\label{fig.fxCalibrationGraph}
+\end{figure}
+
+Now that we have the graph we need to determine if the graph is chordal (see e.g. \cite{golumbic}). A graph is chordal if every loop of length four or more has a chord (i.e. an edge connecting two non-consecutive vertices in the loop). In our example this is easy to check. The largest loop is the central loop consisting of the vertices $E$, $A$, and $X$. This loop has just three elements and thus does not require a chord. The procedure that we are describing in this section requires a chordal graph.
+
+The next step is to identify the cliques in our graph. A clique is a maximal set of vertices that are all connected to each other (the subgraph induced by the set of vertices is complete). In our example there are four such cliques given by the central loop and the three arms of the graph:
+\begin{align}
+	\alpha_C & = \{E,A,X\}\\
+	\alpha_E & = \{E,\nu_E\}\\
+	\alpha_A & = \{A,\nu_A\}\\
+	\alpha_X & = \{X,\nu_X\}
+\end{align}  
+Note that the cliques have non-trivial intersections. We can use these intersections to construct a new graph. The vertices of this new graph are given by the cliques $\alpha_C, \ldots, \alpha_X$ and we connect two cliques if their intersection is not empty. 
+
+\begin{figure}[hbt]
+  \begin{center}
+  	\includegraphics[width=10cm]{img/cliques.png}
+  \end{center}
+  \caption{a) The graph for the cross currency has four cliques. b) These cliques are the vertices of a new graph. An edge in this new graph connects two cliques that have a non-empty intersection.}\label{fig.cliques}
+\end{figure}
+
+
 
 \section{Conclusion}
 
@@ -193,7 +273,11 @@ because the blocks in the diagonal are $H_X/C$ and $H_Y/C$ from equations (\ref{
 	\bibitem{hayns} Emilie Virginia Haynsworth, Determination of the inertia of a partitioned Hermitian matrix,  Linear  Algebra and its Applications \textbf{1}, 1968, 73--81.
 	\bibitem{schur} J. Schur, Über Potenzreihen, die im Innern des Einheitskreises beschränkt sind, Journal für die reine und angewandte Mathematik \textbf{147}, 205 -- 232, 1917.
 	\bibitem{horn} Roger A. Horn, Basic  Properties  of  the  Schur  Complement. In Fuzhen Zhang (Ed.) The Schur complement and its application (17--46). Springer, 2005.
-
+	\bibitem{grone} R. Grone, C.R. Johnson, E. Sa, H. Wolkowicz, Positive definite completion of partial Hermitian matrices, Linear Algebra Appl. 58, 109--124, 1984.
+	\bibitem{smith} R. L. Smith, The positive definite completion problem revisited, Linear Algebra and its Applications 429 (2008) 1442 -- 1452.
+	\bibitem{ksd} our other paper ...
+	\bibitem{golumbic} M. C. Golumbic, Algorithmic Graph Theory and Perfect Graphs, Elsevier, 2004. 
+	
 	% older stuff
 	\bibitem{matrixanalysis} Roger A. Horn, Charles R. Johnson, \emph{Matrix Analysis}, 2nd Edition, Cambridge University Press, 2013.
 	\bibitem{schur} J. Schur, Über Potenzreihen, die im Innern des Einheitskreises beschränkt sind, Journal für die reine und angewandte Mathematik \textbf{147}, 205 -- 232, 1917.
