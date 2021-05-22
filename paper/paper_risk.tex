@@ -223,47 +223,153 @@ where $a$ and $b$ are one of the stochastic variables from equation (\ref{eqn.st
 \begin{equation}
 	(E,\nu_E)\text{\ and\ }(A,\nu_A)
 \end{equation}
-have already been determined in separate calibrations of the interest rate models. That leaves us with 13 free coefficients in $H$. This number of coefficients is too large for a stable calibration. Instead we will calibrate the coefficients
+have already been determined in separate calibrations of the interest rate models. That leaves us with 13 free coefficients in $H$. This number of coefficients is too large for a stable calibration. Instead we will only calibrate the coefficients
 \begin{equation}
 	(E,A), (E,X), (A,X),(X,\nu_X),
 \end{equation}
-and determine the remaining nine coefficients using the completion procedure (see figure \ref{fig.xccymodel}).
+and determine the remaining nine coefficients using the completion procedure described here (see figure \ref{fig.xccymodel}).
 
 \begin{figure}[hbt]
   \begin{center}
   	\includegraphics[width=10cm]{img/xccymodel.png}
   \end{center}
-  \caption{The correlation matrix for the cross currency model. The coefficients $(x_E, \nu_E)$ and $(x_A, \nu_A)$ (the boxes with the solid lines) will be determined in two separate interest rate calibrations. The coefficients $(x_E, X_E^A)$, $(x_E, x_A)$, $(x_A, X_E^A)$, and $(X_E^A, \nu_{EA})$ (the boxes with the dashed lines) will be determined in the cross currency calibration itself. The rest will be determined using the completion procedure.}\label{fig.xccymodel}
+  \caption{The correlation matrix for the cross currency model. The coefficients $(E, \nu_E)$ and $(A, \nu_A)$ (the boxes with the dashed lines) are determined in separate interest rate calibrations. The coefficients $(E, X)$, $(E, A)$, $(A, X)$, and $(X, \nu_X)$ (the boxes with the solid lines) will be determined in the cross currency calibration itself. The remaining coefficients are the result of the completion procedure.}\label{fig.xccymodel}
 \end{figure}
 
-The first step to complete the matrix $H$ is to determine the graph corresponding to $H$. The vertices of the graph are given by the row (or column) indices of $H$. In our case these are identified with the stochastic variables in equation (\ref{eqn.stochvar}). We then obtain the graph for $H$ by connecting the vertices for which we have coefficients. I n our example we obtain the graph in figure \ref{fig.fxCalibrationGraph}.
+The first step to complete the matrix $H$ is to determine the graph $\gamma$ corresponding to $H$. The vertices of the graph are given by the row (or column) indices of $H$. In our case these are identified with the stochastic variables in equation (\ref{eqn.stochvar}). We then obtain the graph for $H$ by connecting the vertices for which we have coefficients. In our example we obtain the graph in figure \ref{fig.fxCalibrationGraph}.
 
 \begin{figure}[hbt]
   \begin{center}
   	\includegraphics[width=10cm]{img/fxCalibrationGraph.png}
   \end{center}
-  \caption{The initial graph for the cross currency calibration. The coefficients $(E,\nu_E)$ and $(A,\nu_A)$ (dashed edges) are determined in separate interest rate calibrations. The other edges are determined in the cross currency calibration itself.}\label{fig.fxCalibrationGraph}
+  \caption{The initial graph $\gamma$ for the cross currency calibration. The coefficients $(E,\nu_E)$ and $(A,\nu_A)$ (dashed edges) are determined in separate interest rate calibrations. The other edges are determined in the cross currency calibration itself.}\label{fig.fxCalibrationGraph}
 \end{figure}
 
-Now that we have the graph we need to determine if the graph is chordal (see e.g. \cite{golumbic}). A graph is chordal if every loop of length four or more has a chord (i.e. an edge connecting two non-consecutive vertices in the loop). In our example this is easy to check. The largest loop is the central loop consisting of the vertices $E$, $A$, and $X$. This loop has just three elements and thus does not require a chord. The procedure that we are describing in this section requires a chordal graph.
+Now that we have the graph we need to determine if the graph is chordal. A graph is chordal if every loop of length four or more has a chord (i.e. an edge connecting two non-consecutive vertices in the loop; see e.g. \cite{golumbic}). In our example this is easy to check. The largest loop is the central loop consisting of the vertices $E$, $A$, and $X$. This loop has just three elements and thus does not require a chord. The procedure that we are describing in this section requires a chordal graph.
 
-The next step is to identify the cliques in our graph. A clique is a maximal set of vertices that are all connected to each other (the subgraph induced by the set of vertices is complete). In our example there are four such cliques given by the central loop and the three arms of the graph:
+The next step is to identify the cliques in our graph. A clique is a maximal set of vertices that are all connected to each other (the subgraph induced by the set of vertices is complete; again, see \cite{golumbic}). In our example there are four such cliques given by the central loop and the three arms of the graph:
 \begin{align}
 	\alpha_C & = \{E,A,X\}\\
 	\alpha_E & = \{E,\nu_E\}\\
 	\alpha_A & = \{A,\nu_A\}\\
 	\alpha_X & = \{X,\nu_X\}
 \end{align}  
-Note that the cliques have non-trivial intersections. We can use these intersections to construct a new graph. The vertices of this new graph are given by the cliques $\alpha_C, \ldots, \alpha_X$ and we connect two cliques if their intersection is not empty. 
+Note that the cliques have non-trivial intersections. We can use these intersections to construct a new graph $\Gamma$. The vertices of this new graph are given by the cliques $\alpha_C, \ldots, \alpha_X$ and we connect two cliques if their intersection is not empty (see figure \ref{fig.cliques}). 
 
 \begin{figure}[hbt]
   \begin{center}
   	\includegraphics[width=10cm]{img/cliques.png}
   \end{center}
-  \caption{a) The graph for the cross currency has four cliques. b) These cliques are the vertices of a new graph. An edge in this new graph connects two cliques that have a non-empty intersection.}\label{fig.cliques}
+  \caption{a) The graph for the cross currency has four cliques. b) These cliques are the vertices of a new graph $\Gamma$. An edge in this new graph connects two cliques that have a non-empty intersection.}\label{fig.cliques}
 \end{figure}
 
+Because the graph $gamma$ for the matrix $H$ is chordal, there exists a clique tree, i.e.  a spanning tree for the graph $\Gamma$ that possesses the intersection property. A spanning tree for $\Gamma$ is a tree that has the same vertices as the graph itself. It possesses the intersection property if for any two vertices $\alpha_1$ and $\alpha_2$ the intersection $\alpha_1\cap\alpha_2$ is contained in all the vertices on the unique path in the tree that connects $\alpha_1$ to $\alpha_2$ (see \cite{blair} for the different characterizations of a chordal graph). In our example the graph $\Gamma$ is itself a tree. It is also easy to check that it possesses the intersection property. We will choose $\alpha_E = \{E, \nu_E\}$ as the root of the tree. 
 
+\begin{figure}[hbt]
+  \begin{center}
+  	\includegraphics[width=10cm]{img/cliqueTree.png}
+  \end{center}
+  \caption{The clique tree for the graph $\gamma$. The numbers on the right denote the height in the tree if we choose $\alpha_E$ to be the root of the tree. The completion procedure proceeds from the top of the tree to the bottom. We complete the matrix by repeatedly using equation (\ref{eqn.choice}) from the previous section.}\label{fig.cliqueTree}
+\end{figure}
+
+We now start completing the matrix $H$ by repeatedly applying equation (\ref{eqn.choice}) from the previous section. We start with the cliques on the top of the tree and work our way down. We start with the clique $\alpha_X=\{X, \nu_X\}$. It intersects the clique $\alpha_C$ in the element $X$. This leads us to make the following identifications:
+\begin{align}
+	H_X & = \begin{pmatrix}
+		1 & (X, \nu_X) \\
+		& 1
+	\end{pmatrix} \\
+	H_Y & = \begin{pmatrix}
+		1 & (E,X) & (A,X) \\
+		& 1 & (E,A) \\
+		& & 1 
+	\end{pmatrix}
+\end{align}
+Note that the common matrix $C$ is just given by 1. Equation (\ref{eqn.choice}) now gives:
+\begin{align}
+	W & = ( (E,\nu_X), (A,\nu_X) ) \\
+	& = BC^{-1}D \\
+	& = (X, \nu_X) ( (E,X), (A,X) ) ) \\
+	& =  ( (X, \nu_X)(E,X), (X, \nu_X)(A,X) ) ), 
+\end{align}
+or 
+\begin{align}
+	(E,\nu_X) & = (X, \nu_X)(E,X) \\
+	(A,\nu_X) & = (X, \nu_X)(A,X).
+\end{align}
+Figure \ref{fig.firstStep} shows the first completion step in the graph $\gamma$. 
+
+\begin{figure}[hbt]
+  \begin{center}
+  	\includegraphics[width=10cm]{img/firstStep.png}
+  \end{center}
+  \caption{We start the completion of the matrix $H$ with the cliques of height two. Applying equation (\ref{eqn.choice}) to the matrices given by the cliques $\alpha_X$ and $\alpha_C$ adds the dashed lines to the graph $\gamma$.}\label{fig.firstStep}
+\end{figure}
+
+We have one more clique with height two in the clique tree for $\gamma$. In the next step we take the clique $\alpha_A$ and combine it with the newly created clique from the last step. This time we make the identifications
+\begin{align}
+	H_X & = \begin{pmatrix}
+		1 & (A, \nu_A) \\
+		& 1
+	\end{pmatrix} \\
+	H_Y & = \begin{pmatrix}
+		1 & (A,E) & (A,X) & (A,\nu_X) \\
+		& 1 & (E,X) & (E,\nu_X) \\
+		& & 1 & (X,\nu_X) \\
+		& & & 1 
+	\end{pmatrix}
+\end{align}
+We apply equation (\ref{eqn.choice}) again to obtain:
+\begin{align}
+	W & = ( (E,\nu_A), (X,\nu_A), (\nu_X,\nu_A) ) \\
+	& = BC^{-1}D \\
+	& = (A,\nu_A) ( (E,A), (A,X), (A,\nu_X) ),
+\end{align}
+or
+\begin{align}
+	(E,\nu_A) & = (A,\nu_A) (E,A) \\
+	(X,\nu_A) & = (A,\nu_A)(A,X)\\
+	(\nu_X,\nu_A) & = (A,\nu_A) (A,\nu_X) \\
+	& = (A,\nu_A)(X, \nu_X)(A,X)
+\end{align}
+Figure \ref{fig.secondStep} shows the result of this step in the graph $\gamma$. 
+
+\begin{figure}[hbt]
+  \begin{center}
+  	\includegraphics[width=10cm]{img/secondStep.png}
+  \end{center}
+  \caption{In the second step we combine the clique from the first step with the remaining clique of height two in the tree. This step adds the three edges $(\nu_X,\nu_A)$, $(X,\nu_A)$, and $(E,\nu_A)$.}\label{fig.secondStep}
+\end{figure}
+
+There are no more cliques of height two left. Looking at the graph in figure \ref{fig.secondStep} we see that only the edges connecting $\nu_E$ to the large clique that is the result of the last step are missing. These missing edges will be created in the last step. We make the following identifications:
+\begin{align}
+		H_X & = \begin{pmatrix}
+		1 & (E, \nu_E) \\
+		& 1
+	\end{pmatrix} \\
+	H_Y & = \begin{pmatrix}
+		1 & (E,A) & (E,\nu_A) & (E,X) & (E,\nu_X) \\
+		& 1 &  (A,\nu_A) & (A,X) & (A,\nu_X) \\
+		& & 1 & (\nu_A,X) & (\nu_A,\nu_X) \\
+		& & & 1 & (X,\nu_X) \\
+		& & & & 1 
+	\end{pmatrix}
+\end{align}
+Applying equation (\ref{eqn.choice}) one more time gives:
+\begin{align}
+	W &= ( (\nu_E,A),(\nu_E,\nu_A),(\nu_E,X),(\nu_E,\nu_X) ) \\ 
+	& = BC^{-1}D \\
+	& = (E, \nu_E) ( (E,A),(E,\nu_A),(E,X),(E,\nu_X) ), 
+\end{align}
+or
+\begin{align}
+	(\nu_E,A) & = (E, \nu_E) (E,A) \\
+	(\nu_E,\nu_A) & = (E, \nu_E) (E,\nu_A) \\
+	& = (E, \nu_E) (A,\nu_A) (E,A) \\
+	(\nu_E,X) & = (E, \nu_E) (E,X) \\
+	(\nu_E,\nu_X) & = (E, \nu_E) (E,\nu_X) \\
+	& = (E, \nu_E) (X, \nu_X)(E,X)
+\end{align}
+With this step we have added the last missing edges in the graph $\gamma$ and have obtained a positive definite completion of the matrix $H$.
 
 \section{Conclusion}
 
@@ -277,6 +383,7 @@ Note that the cliques have non-trivial intersections. We can use these intersect
 	\bibitem{smith} R. L. Smith, The positive definite completion problem revisited, Linear Algebra and its Applications 429 (2008) 1442 -- 1452.
 	\bibitem{ksd} our other paper ...
 	\bibitem{golumbic} M. C. Golumbic, Algorithmic Graph Theory and Perfect Graphs, Elsevier, 2004. 
+	\bibitem{blair} Jean R. S. Blair, Barry Peyton, An introduction to chordal graphs and clique trees, in Alan George, John R. Gilbert, Joseph W. H. Liu (Eds.), Graph Theory and Sparse Matrix Computation (pp. 1 -- 29), The IMA Volumes in Mathematics and its Applications, 56, Springer Verlag, 1993.
 	
 	% older stuff
 	\bibitem{matrixanalysis} Roger A. Horn, Charles R. Johnson, \emph{Matrix Analysis}, 2nd Edition, Cambridge University Press, 2013.
