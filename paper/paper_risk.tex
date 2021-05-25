@@ -371,6 +371,34 @@ or
 \end{align}
 With this step we have added the last missing edges in the graph $\gamma$ and have obtained a positive definite completion of the matrix $H$.
 
+\section{Several currencies}
+In the previous section we have just looked at one foreign currency $A$ with one exchange rate $X$. The procedure can easily be extended to an arbitrary number of foreign currencies. We will denote the foreign currencies by a capital letter:
+\begin{equation}
+	A, B, C, \ldots
+\end{equation}
+The exchange rate between the domestic currency $E$ and the foreign currency $A$ will now be denoted by 
+\begin{equation}
+	X_E^A.
+\end{equation}
+If $m_A$ is an amount in currency $A$ then $X_E^Am_A$ is the corresponding amount in currency $E$. If we are given the same correlation coefficients as in the previous section we obtain the graph in figure \ref{fig.several}. The corresponding graph of cliques is shown in figure \ref{fig.severalCliques}.
+
+\begin{figure}[hbt]
+  \begin{center}
+  	\includegraphics[width=10cm]{img/severalCurrencies.png}
+  \end{center}
+  \caption{The graph corresponding to the incomplete correlation matrix for five foreign currencies.}\label{fig.several}
+\end{figure}
+
+\begin{figure}[hbt]
+  \begin{center}
+  	\includegraphics[width=12cm]{img/severalCurrCliques.png}
+  \end{center}
+  \caption{The graph of cliques for the case of several foreign currencies. A clique tree is obtained by removing the lighter edges in the middle layer. It is again a tree of height two.}\label{fig.several}
+\end{figure}
+
+
+
+
 \section{Conclusion}
 
 \begin{thebibliography}{MM}
@@ -384,16 +412,7 @@ With this step we have added the last missing edges in the graph $\gamma$ and ha
 	\bibitem{ksd} our other paper ...
 	\bibitem{golumbic} M. C. Golumbic, Algorithmic Graph Theory and Perfect Graphs, Elsevier, 2004. 
 	\bibitem{blair} Jean R. S. Blair, Barry Peyton, An introduction to chordal graphs and clique trees, in Alan George, John R. Gilbert, Joseph W. H. Liu (Eds.), Graph Theory and Sparse Matrix Computation (pp. 1 -- 29), The IMA Volumes in Mathematics and its Applications, 56, Springer Verlag, 1993.
-	
-	% older stuff
-	\bibitem{matrixanalysis} Roger A. Horn, Charles R. Johnson, \emph{Matrix Analysis}, 2nd Edition, Cambridge University Press, 2013.
-	\bibitem{schur} J. Schur, Über Potenzreihen, die im Innern des Einheitskreises beschränkt sind, Journal für die reine und angewandte Mathematik \textbf{147}, 205 -- 232, 1917.
-	\bibitem{bana} T. Banachiewicz, Zur Berechnung der Determinanten, wie auch der Inversen, und zur darauf basierten Auflösung der Systeme linearer Gleichungen, Acta Astronom. S\'er. C 3, 41--67, 1937.
-	\bibitem{frazer} Frazer, R., Duncan, W., Collar, A. (1938). Elementary Matrices And Some Applications To Dynamics And Differential Equations, Cambridge University Press, 1938.
-	\bibitem{ouellette} Ouellette, D. (1981). Schur complements and statistics Linear Algebra and its Applications  36, 187-295. https://dx.doi.org/10.1016/0024-3795(81)90232-9
-	\bibitem{albert} Albert, A. (1969). Conditions for Positive and Nonnegative Definiteness in Terms of Pseudoinverses SIAM Journal on Applied Mathematics  17(2), 434-440. https://dx.doi.org/10.1137/0117041
-	\bibitem{smith} Smith, R. (2008). The positive definite completion problem revisited Linear Algebra and its Applications  429(7), 1442-1452. https://dx.doi.org/10.1016/j.laa.2008.04.020	
-	\bibitem{roger} Penrose, R. (1955). A generalized inverse for matrices Mathematical Proceedings of the Cambridge Philosophical Society  51(3), 406-413. https://dx.doi.org/10.1017/s0305004100030401
+
 \end{thebibliography}
 
 \appendix
