@@ -91,7 +91,7 @@
 \section{Introduction}
 
 \section{The completion criterium}
-Given an incomplete correlation matrix what is the right way to complete it? To motivate the answer we need to introduce some notation. Let 
+Given a correlation matrix with unknown coefficients what is the right way to complete it? To motivate the answer we need to introduce some notation. Let 
 \begin{equation}
 	X = ( x_1, \ldots, x_k )^T\in \R^k
 \end{equation}
@@ -100,7 +100,7 @@ be a $k$ dimensional random variable with a density function given by a $k$ dime
 	f(X) & = N_k[\mu, H_X]( X ) \\
 	& = (2\pi)^{-k/2}\det(H_X)^{-1/2}\exp\left(-\frac{1}{2}(X -\mu)^T H_X^{-1} (X-\mu)\right),
 \end{align}
-with mean $\mu$ and covariance matrix $H$. A crucial property of the normal distribution is that if we condition on some of the $x_i$, $i=1, \dots, k$, we again obtain a normal distribution. Assume that we want to condition on the last $l$ components of $X$:
+with mean $\mu$ and covariance matrix $H_X$. A crucial property of the normal distribution is that if we condition on some of the $x_i$, $i=1, \dots, k$, we again obtain a normal distribution. Let us assume that we want to condition on the last $l$ components of $X$:
 \begin{equation}
 	Z = (x_{k-l+1}, \ldots, x_k)^T \in \R^l.
 \end{equation}
@@ -123,7 +123,7 @@ If we assume that $X$ has zero mean (i.e. $\mu=0$), the density function for $X$
 \begin{equation}\label{eqn.hxc}
 	H_X/C = A - B C^{-1}B^T
 \end{equation}
-(Emilie Haynsworth introduced the name and highlighted its usefulness in \cite{hayns}. Schur originally made use of it in \cite{schur}. For an overview of the properties of the Schur complement see \cite{horn}.) We see that we again obtain a normal distribution. We will see the Schur complement again soon.
+(Emilie Haynsworth introduced the name and highlighted its usefulness in \cite{hayns}. Schur originally made use of it in \cite{schur}. For an overview of the properties of the Schur complement see \cite{horn}.) We see that we again obtain a normal distribution. We will meet the Schur complement again soon.
 
 Now let us look at a second set of random variables 
 \begin{equation}
@@ -140,7 +140,7 @@ with
 		D^T & E
 	\end{pmatrix}.
 \end{equation}
-Note that the submatrix $C$ is shared with $H_X$. In our context the matrix might have been obtained by a previous calibration of a model that is part of both $X$ and $Y$. If we were to condition on $Z$ we would find
+Note that the submatrix $C$ is shared with $H_X$. In our context the matrix $C$ might have been obtained by a previous calibration of a model that is part of both $X$ and $Y$. If we were to condition on $Z$ we would find
 \begin{equation}
 	f(Y\vert Z) = N_{n-k-l}[ D^T C^{-1}Z,H_Y/C](\bar Y), 
 \end{equation}
@@ -181,7 +181,7 @@ the above matrix becomes block diagonal and the conditional densities obey
 \end{equation}
 because the blocks in the diagonal are $H_X/C$ and $H_Y/C$ from equations (\ref{eqn.hxc}) and (\ref{eqn.hyc}). Given that $Z$ is part of both $X$ and $Y$ this is as much independence as we can ask for. The way to choose the matrix $W$ and complete $H$ is to demand that $X$ and $Y$, when conditioned on their shared part $Z$, are independent.
 
-This choice of $W$ can be characterized in two more ways. Banachiewicz showed that the inverse of a matrix could be expressed using the Schur complement. Since the Schur complement $H/C$ is block diagonal the inverse of $H$ is given by
+This choice of $W$ can be characterized in two more ways (see \cite{smith} and \cite{ksd}). Banachiewicz showed that the inverse of a matrix can be expressed using the Schur complement. Since the Schur complement $H/C$ is block diagonal the inverse of $H$ is given by
 \begin{equation}
 	H^{-1} = \begin{pmatrix}
 		(H_X/C)^{-1} & -(H_X/C)^{-1} B C^{-1} & 0 \\
@@ -206,12 +206,12 @@ The entropy $S$ of the normal distribution $N_n[\mu,H]$ is given by
 \begin{equation}
 	S = \frac{1}{2}\log \det H + \text{\ const.}
 \end{equation} 
-Because we are maximizing the determinant of $H$ we are also maximizing the entropy $S$ of the distribution described by $H$. The $H$ chosen by the $W$ from equation (\ref{eqn.choice}) is the one that puts the fewest constraints on the distribution of $X$ and $Y$.
+Because we are maximizing the determinant of $H$ we are also maximizing the entropy $S$ of the distribution described by $H$. The $H$ chosen by the $W$ from equation (\ref{eqn.choice}) is the one that puts the fewest constraints on the distribution of $X$ and $Y$. 
 
 \section{The completion procedure}
-In the last section we have completed the matrix $H$ in the very simple case where there are two known matrices $H_X$ and $H_Y$ with just one shared part $C$. The general case is usually not this simple. Building on the result in \cite{grone} Smith \cite{smith} (see also \cite{ksd} for a more general treatment of the semidefinite case) showed how to solve the general problem by reducing it to a repeated application of the result from the previous section. We will discuss the required steps in this section by looking at a particular example, the cross currency model.
+In the last section we have completed the matrix $H$ in the very simple case where there are two known matrices $H_X$ and $H_Y$ with just one shared part $C$. The general case is usually more complicated. Building on the result in \cite{grone} Smith \cite{smith} (see also \cite{ksd} for a more general treatment of the semidefinite case) showed how to solve the general problem by reducing it to a repeated application of the result from the previous section. We will discuss the required steps in this section by looking at a particular example: the cross currency model.
 
-Our model will consist of two interest rate models for the base currency $E$ and the foreign currency $A$. These two currencies are linked by an exchange rate $X$. We will model the two interest rates and the exchange rate with stochastic volatility models so that we have a total of six stochastic variables:
+Our model will consist of two interest rate models; one for the base currency $E$ and one the foreign currency $A$. These two currencies are linked by an exchange rate $X$. We will model the two interest rates and the exchange rate with stochastic volatility models so that we have a total of six stochastic variables:
 \begin{equation}\label{eqn.stochvar}
 	E, \nu_E, A, \nu_A, X, \nu_X
 \end{equation}
@@ -254,7 +254,7 @@ The next step is to identify the cliques in our graph. A clique is a maximal set
 	\alpha_A & = \{A,\nu_A\}\\
 	\alpha_X & = \{X,\nu_X\}
 \end{align}  
-Note that the cliques have non-trivial intersections. We can use these intersections to construct a new graph $\Gamma$. The vertices of this new graph are given by the cliques $\alpha_C, \ldots, \alpha_X$ and we connect two cliques if their intersection is not empty (see figure \ref{fig.cliques}). 
+Note that the cliques have non-trivial intersections. We can use these intersections to construct a new graph $\Gamma$. The vertices of this new graph are given by the cliques $\alpha_C, \ldots, \alpha_X$ and we connect two cliques if their intersection is non-empty (see figure \ref{fig.cliques}). 
 
 \begin{figure}[hbt]
   \begin{center}
@@ -263,7 +263,7 @@ Note that the cliques have non-trivial intersections. We can use these intersect
   \caption{a) The graph for the cross currency has four cliques. b) These cliques are the vertices of a new graph $\Gamma$. An edge in this new graph connects two cliques that have a non-empty intersection.}\label{fig.cliques}
 \end{figure}
 
-Because the graph $gamma$ for the matrix $H$ is chordal, there exists a clique tree, i.e.  a spanning tree for the graph $\Gamma$ that possesses the intersection property. A spanning tree for $\Gamma$ is a tree that has the same vertices as the graph itself. It possesses the intersection property if for any two vertices $\alpha_1$ and $\alpha_2$ the intersection $\alpha_1\cap\alpha_2$ is contained in all the vertices on the unique path in the tree that connects $\alpha_1$ to $\alpha_2$ (see \cite{blair} for the different characterizations of a chordal graph). In our example the graph $\Gamma$ is itself a tree. It is also easy to check that it possesses the intersection property. We will choose $\alpha_E = \{E, \nu_E\}$ as the root of the tree. 
+Because the graph $\gamma$ for the matrix $H$ is chordal, there exists a clique tree, i.e.  a spanning tree for the graph $\Gamma$ that possesses the intersection property. A spanning tree for $\Gamma$ is a tree that has the same vertices as the graph itself. It possesses the intersection property if for any two vertices $\alpha_1$ and $\alpha_2$ the intersection $\alpha_1\cap\alpha_2$ is contained in all the vertices on the unique path in the tree that connects $\alpha_1$ to $\alpha_2$ (see \cite{blair} for the different characterizations of a chordal graph). In our example the graph $\Gamma$ is itself a tree. It is also easy to check that it possesses the intersection property. In the next section we will see an example where the intersection property is not trivially fulfilled. We will choose $\alpha_E = \{E, \nu_E\}$ as the root of the tree. 
 
 \begin{figure}[hbt]
   \begin{center}
@@ -380,7 +380,15 @@ The exchange rate between the domestic currency $E$ and the foreign currency $A$
 \begin{equation}
 	X_E^A.
 \end{equation}
-If $m_A$ is an amount in currency $A$ then $X_E^Am_A$ is the corresponding amount in currency $E$. If we are given the same correlation coefficients as in the previous section we obtain the graph in figure \ref{fig.several}. The corresponding graph of cliques is shown in figure \ref{fig.severalCliques}.
+If $m_A$ is an amount in currency $A$ then $X_E^Am_A$ is the corresponding amount in currency $E$. If we are given the same correlation coefficients as in the previous section we obtain the graph in figure \ref{fig.several}. The corresponding graph of cliques is shown in figure \ref{fig.severalCliques}. The corresponding clique tree is obtained by erasing the lines that connect the cliques 
+\begin{equation}
+	\alpha_{CA}, \alpha_{CB}, \ldots, \alpha_{CG}
+\end{equation}
+on the middle layer. The intersection of any two of these cliques is given by
+\begin{equation}
+	\{E\} \subset \alpha_E.
+\end{equation}
+Since the path connecting the two cliques passes through $\alpha_E$ this tree satisfies the intersection property. 
 
 \begin{figure}[hbt]
   \begin{center}
@@ -412,11 +420,6 @@ If $m_A$ is an amount in currency $A$ then $X_E^Am_A$ is the corresponding amoun
 	\bibitem{ksd} our other paper ...
 	\bibitem{golumbic} M. C. Golumbic, Algorithmic Graph Theory and Perfect Graphs, Elsevier, 2004. 
 	\bibitem{blair} Jean R. S. Blair, Barry Peyton, An introduction to chordal graphs and clique trees, in Alan George, John R. Gilbert, Joseph W. H. Liu (Eds.), Graph Theory and Sparse Matrix Computation (pp. 1 -- 29), The IMA Volumes in Mathematics and its Applications, 56, Springer Verlag, 1993.
-
 \end{thebibliography}
-
-\appendix
-
-\section{Maybe ...}
 
 \end{document}

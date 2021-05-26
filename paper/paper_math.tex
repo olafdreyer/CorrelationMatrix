@@ -98,13 +98,16 @@ Let the Hermitian matrix $H\in M_n(\C)$ be partitioned as follows:
 		B^\star & C
 	\end{pmatrix},
 \end{equation}
-with $A\in M_k(\C)$, $1\le k\le n-1$. Let $V = K\oplus L$ be the decomposition of $V\simeq \C^n$ in accordance with the partition of $H$ in equation (\ref{eqn.defh}) so that $A$ is a map from $K$ to $K$, and $C$ is a map from $L$ to $L$. Let us further assume that $H$ is positive semi-definite. Let $k\in N(A)\subset K$, i.e. let $A k = 0$. For $v=(k,0)^T\in V$ we then have 
+with $A\in M_k(\C)$, $C\in M_l(\C)$, $1\le k,l\le n-1$, $k+l=n$. Let $V = K\oplus L$ be the decomposition of $V\simeq \C^n$ in accordance with the partition of $H$ in equation (\ref{eqn.defh}) so that $A$ is a map from $K$ to $K$, and $C$ is a map from $L$ to $L$. Let us further assume that $H$ is positive semi-definite. Let $w\in N(A)\subset K$ be an element of the null space of $A$, i.e. let $A w = 0$. For $v=(W,0)^T\in V$ we then have 
 \begin{equation}
 	v^\star H v=0.
 \end{equation}
 Since $H$ is positive semi-definite this implies (see \cite{matrixanalysis}) that we already have
 \begin{equation}
-	Hv = 0,
+	Hv = \begin{pmatrix}
+		0 \\
+		B^\star w
+	\end{pmatrix} = 0,
 \end{equation}
 or 
 \begin{equation}\label{eqn.nulla}
@@ -114,7 +117,7 @@ In a similar fashion we can establish that the null space of $C$ is contained in
 \begin{equation}\label{eqn.nullc}
 	N(C) \subset N(B).
 \end{equation}
-The relations for the null spaces are equivalent to these relations for the ranges:
+The relations for the null spaces are equivalent to these relations for the ranges of $A$ and $C$:
 \begin{align}
 	R(B) & \subset R(A) \\
 	R(B^\star) & \subset R(C).
@@ -189,7 +192,7 @@ We note a number of properties of the generalized determinant:
 	All of these identities follow from the fact that $H = U D U^\star$ for a unitary $U$ and a diagonal $D$ that contains the eigenvalues of $H$ on the diagonal. \qed
 \end{proof}
 
-We note that the generalized determinant does not have many properties the usual determinant has. In particular, it is not a continuous function of $H$, and the generalized determinant of the product of two matrices is not the product of the two determinants. 
+We note that the generalized determinant does not have many of the properties the usual determinant has. In particular, it is not a continuous function of $H$, and the generalized determinant of the product of two matrices is not the product of the two determinants. 
 
 \section{The extensions}\label{sec.ext}
 With the preparations in section \ref{sec.partition} and the definition of the generalized determinant we now want to extent three results: Fischer's inequality, the determinant equality for Schur's complement, and Banachiewicz's form of the inverse of a matrix.
@@ -243,7 +246,7 @@ We need to convince ourselves that the last determinant is equal to $\detp H/A$.
 	N(H/A) & = N( C - B^\star A^+ B ) \\ 
 	& = N(C).
 \end{align}
-We already know that $N(C) \subset N(H/A)$. To show equality let $l\in N(N/A)$ and set
+We already know that $N(C) \subset N(H/A)$. To show equality let $l\in N(H/A)$ and set
 \begin{equation}
 	k = - A^+ B l.
 \end{equation}
@@ -254,7 +257,7 @@ It then follows that
 		l
 	\end{pmatrix} = 0.
 \end{equation}
-Since $H$ is of maximal rank this implies that $(k,l)^T\in N(A)\oplus N(C)$. In particular, we have $w\in N(C)$. We thus obtain our second result:
+Since $H$ is of maximal rank this implies that $(k,l)^T\in N(A)\oplus N(C)$. In particular, we have $l\in N(C)$. We thus obtain our second result:
 
 \begin{proposition}\label{prop.schur}
  Let a Hermitian $H$ be positive semidefinite and partitioned as in equation (\ref{eqn.defh}). If $H$ is of maximal rank then
