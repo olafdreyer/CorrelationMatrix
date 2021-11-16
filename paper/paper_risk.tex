@@ -49,7 +49,7 @@
 \textbf{JEL:} C02, C63, G12
 
 \section{Introduction}
-Modern financial models are driven by a large number of stochastic variables. These stochastic variables are usually correlated which creates the need to determine the coefficients of the underlying correlation matrix. Since the number of correlation coefficients increases quadratically with the number of stochastic variables, this number can become very large. While it would be desirable to calibrate all these coefficients this is in practice not possible because such a calibration procedure would be too slow, too unstable, or would require calibration instruments for which quotes can not be obtained. Hybrid models are another source of undetermined correlation coefficients. Two calibrated models might be parts of a larger model. While the coefficients for the individual models have been determined in separate calibration, the coefficients that mix variables from the two different models are undetermined. In a large model, with many smaller constituent models, the number of such coefficients can constitute the bulk of the matrix. 
+Modern financial models are driven by a large number of stochastic variables. These stochastic variables are usually correlated which creates the need to determine the coefficients of the underlying correlation matrix. Since the number of correlation coefficients increases quadratically with the number of stochastic variables, this number can become very large. While it would be desirable to calibrate all these coefficients this is in practice not possible because such a calibration procedure would be too slow, too unstable, or would require calibration instruments for which quotes can not be obtained. The issue of stability is especially important in a risk neutral setup. Daily calibrations might display undesired fluctuations if the calibration is not stable. Hybrid models are another source of undetermined correlation coefficients. Two calibrated models might be parts of a larger model. While the coefficients for the individual models have been determined in separate calibration, the coefficients that mix variables from the two different models are undetermined. In a large model, with many smaller constituent models, the number of such coefficients can constitute the bulk of the matrix. 
 
 Faced with this situation, it is tempting to set the missing coefficients to zero. The idea here is that any other choice seems to add arbitrary information. This approach has several shortcomings though. The most important of which is that one might end up with a matrix that is not positive semidefinite and thus not a valid correlation matrix. To obtain a valid matrix further steps are required. One possibility is to use the fact that the set of positive definite correlation matrices is an open set that contains the unit matrix. It is thus always possible to scale the off-diagonal elements of the matrix with a common scale factor $\lambda<1$ and obtain a positive definite matrix. Another possibility is to choose the nearest correlation matrix in a suitable topology (see e.g \cite{higham}). These additional steps might change all the coefficients of the matrix, including those coefficients, that have been obtained in previous calibrations. They also rely on somewhat arbitrary further assumptions like a particular notion of distance on the space of matrices. 
 
@@ -57,7 +57,7 @@ The approach presented here does not suffer from these shortcomings. We start wi
 
 We then show how to construct this completion. The construction starts by looking at the graph associated with the incomplete matrix. The vertices of the graph are the rows (or columns) of the matrix. Since we are looking at a correlation matrix, the vertices correspond to the stochastic variables of the model. Two vertices are connected by an edge in the graph if the corresponding correlation coefficient in the matrix is know. It is here that we encounter the one condition that needs to be satisfied for the construction to work. The graph that we have just constructed needs to be chordal. A graph is chordal if every loop in the graph that has more than three edges contains a chord, i.e. an edge that connects two non-adjacent vertices in the loop. If this condition is satisfied we can follow a construction first introduced by \cite{grone} and refined by \cite{smith} to complete the matrix. Every step of the construction adds new vertices to the edge which in turn correspond to entries in the correlation matrix. The matrix obtained in this way will automatically be a positive-semidefinite so that no further steps need to be taken to obtain a valid correlation matrix. 
 
-The paper now consists of three parts. In the next section we discuss the completion criterium. The matrix can be characterized in three different ways and we present them here. We then discuss the construction of the completion in section \ref{sec.procedure}. We do this by following the concrete example of a cross-currency model with two currencies and one exchange rate. The two models for the interest rate and the model for the exchange rate are assumed to be stochastic volatility models so that we end up with a total of six stochastic variables. We describe all the required steps using this model but the steps can easily be generalized to more complicated models. One such model is the $N$-currency model with $(N-1)$ foreign exchange rates that is described in section \ref{sec.several}. 
+The paper now consists of three parts. In the next section we discuss the completion criterium. The matrix can be characterized in three different ways and we present them here. We then discuss the construction of the completion in section \ref{sec.procedure}. We do this by following the concrete example of a cross-currency model consisting of two interest rate models that are linked by one exchange rate. The two interest rate models and the model for the exchange rate are assumed to be stochastic volatility models so that we end up with a total of six stochastic variables. We will use this model to describe the all the required steps. These steps can easily be generalized to more complicated models. The $N$-currency model with $(N-1)$ foreign exchange rates is one such model. It is described in section \ref{sec.several}. 
 
 \section{The completion criterium}\label{sec.criterium}
 Given a correlation matrix with unknown coefficients what is the right way to complete it? To motivate the answer we need to introduce some notation. Let 
@@ -86,7 +86,7 @@ with $A\in M_{k-l}$, $C\in M_l$, and $B\in M_{k-l,l}$. Let $\bar X$ be the first
 \end{equation}
 If we assume that $X$ has zero mean (i.e. $\mu=0$), the density function for $X$ conditioned on $Z$ is then given by
 \begin{equation}
-	f(X \vert Z ) = N_{k-l}[BC^{-1}Z, H_X/C ](\bar X),
+	f(\bar X \vert Z ) = N_{k-l}[BC^{-1}Z, H_X/C ](\bar X),
 \end{equation}
 (see \cite[chapter 8]{rao} and \cite{cottle}) where $H_X/C$ is the Schur complement of $C$ in $H_X$:
 \begin{equation}\label{eqn.hxc}
@@ -96,11 +96,11 @@ If we assume that $X$ has zero mean (i.e. $\mu=0$), the density function for $X$
 
 Now let us look at a second set of random variables 
 \begin{equation}
-	Y = (x_{k-l+1}, \ldots, x_k, x_{k+1}, \ldots, x_n)^T \in \R^{n-k},
+	Y = (x_{k-l+1}, \ldots, x_k, x_{k+1}, \ldots, x_n)^T \in \R^{n-k+l},
 \end{equation}
 that has an overlap $Z$ with the random variables $X$. Let the density function for $Y$ be given by
 \begin{equation}
-	f(Y) = N_{n-k}[0,H_Y] ( Y),
+	f(Y) = N_{n-k+l}[0,H_Y] ( Y),
 \end{equation}
 with
 \begin{equation}
@@ -111,7 +111,7 @@ with
 \end{equation}
 Note that the submatrix $C$ is shared with $H_X$. In our context the matrix $C$ might have been obtained by a previous calibration of a model that is part of both $X$ and $Y$. If we were to condition on $Z$ we would find
 \begin{equation}
-	f(Y\vert Z) = N_{n-k-l}[ D^T C^{-1}Z,H_Y/C](\bar Y), 
+	f(\bar Y\vert Z) = N_{n-k-l}[ D^T C^{-1}Z,H_Y/C](\bar Y), 
 \end{equation}
 with
 \begin{equation}\label{eqn.hyc}
@@ -127,7 +127,7 @@ and $\bar Y$ is the part of $Y$ that is not $Z$. If we now want to describe $X$ 
 \end{equation}
 with a yet to be determined matrix $W\in M_{k-l,n-l}$. Because $X$ and $Y$ share the random variables in $Z$ we can not make them independent. The next best thing that we can do is to demand that if we fix $Z$ the remaining parts of $X$ and $Y$ are independent. The combined density for $X$ and $Y$ when we condition on $Z$ is given by
 \begin{equation}
-	f( X,Y\vert Z) = N_{n-l}[ (B^T,D)^TC^{-1}Z, H/C](\bar X, \bar Y),
+	f( \bar X,\bar Y\vert Z) = N_{n-l}[ (B^T,D)^TC^{-1}Z, H/C](\bar X, \bar Y),
 \end{equation}
 with
 \begin{align}
@@ -146,7 +146,7 @@ We see that if we set
 \end{equation}
 the above matrix becomes block diagonal and the conditional densities obey
 \begin{equation}\label{eqn.independent}
-	f(X,Y\vert Z ) = f(X\vert Z)f(Y\vert Z)
+	f(\bar X,\bar Y\vert Z ) = f(\bar X\vert Z)f(\bar Y\vert Z)
 \end{equation}
 because the blocks in the diagonal are $H_X/C$ and $H_Y/C$ from equations (\ref{eqn.hxc}) and (\ref{eqn.hyc}). Given that $Z$ is part of both $X$ and $Y$ this is as much independence as we can ask for. The way to choose the matrix $W$ and complete $H$ is to demand that $X$ and $Y$, when conditioned on their shared part $Z$, are independent.
 
@@ -180,7 +180,7 @@ Because we are maximizing the determinant of $H$ we are also maximizing the entr
 \section{The completion procedure}\label{sec.procedure}
 In the last section we have completed the matrix $H$ in the very simple case where there are two known matrices $H_X$ and $H_Y$ with just one shared part $C$. The general case is usually more complicated. Building on the result in \cite{grone} Smith \cite{smith} (see also \cite{ksd} for a more general treatment of the semidefinite case) showed how to solve the general problem by reducing it to a repeated application of the result from the previous section. We will discuss the required steps in this section by looking at a particular example: the cross currency model.
 
-Our model will consist of two interest rate models; one for the base currency $E$ and one the foreign currency $A$. These two currencies are linked by an exchange rate $X$. We will model the two interest rates and the exchange rate with stochastic volatility models so that we have a total of six stochastic variables:
+Our model will consist of two interest rate models; one for the domestic currency $E$ and one the foreign currency $A$. These two currencies are linked by an exchange rate $X$. We will model the two interest rates and the exchange rate with stochastic volatility models so that we have a total of six stochastic variables:
 \begin{equation}\label{eqn.stochvar}
 	E, \nu_E, A, \nu_A, X, \nu_X
 \end{equation}

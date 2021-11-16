@@ -1,75 +1,26 @@
-\documentclass[12pt, oneside]{article} 
-\usepackage[a4paper]{geometry}              
-\usepackage{graphicx}
+\documentclass[11pt, a4paper]{article} 
+% \usepackage[a4paper]{geometry}              
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage[table]{xcolor}
-
-%SetFonts
-\usepackage[T1]{fontenc}
-\usepackage[bitstream-charter]{mathdesign}
-%SetFonts
-
-%define example environment 
-\newcounter{examplecounter}
-\newenvironment{example}%
-{%
-\small\begin{quote}%
-\refstepcounter{examplecounter}%
-\textbf{Example \arabic{examplecounter}}%
-\quad%
-}%
-{%\schluss%
-\end{quote}%
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,  % hyperlinks will be coloured
+    linkcolor=blue,   % hyperlink text will be blue
+    citecolor=blue
 }
-
-%define remark environment 
-\newcounter{remarkcounter}
-\newenvironment{remark}%
-{%
-\small\begin{quote}%
-\refstepcounter{remarkcounter}%
-\textbf{Remark \arabic{remarkcounter}}%
-\quad%
-}%
-{%\schluss%
-\end{quote}%
-}
-
-%define remark environment 
-\newcounter{questioncounter}
-\newenvironment{question}%
-{%
-\small\begin{quote}%
-\refstepcounter{questioncounter}%
-\textbf{Question \arabic{questioncounter}}%
-\quad%
-}%
-{%\schluss%
-\end{quote}%
-}
-
-
-%define important environment
-\newenvironment{important}{\begin{quote}%
-\textbf{Important:}%
-\quad
-}{%
-\end{quote}%
-}
-
-\newcommand{\qed}{\nobreak \ifvmode \relax \else
-      \ifdim\lastskip<1.5em \hskip-\lastskip
-      \hskip1.5em plus0em minus0.5em \fi \nobreak
-      \vrule height0.5em width0.5em depth0.25em\fi}
+\usepackage{xcolor}
+% \usepackage{a4wide}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{definition}{Definition}
-\newenvironment{proof}[1][Proof]{\begin{trivlist}
-\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{proof}[1][Proof]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
@@ -79,16 +30,29 @@
 \newcommand{\rank}{\text{rank}}
 \newcommand{\detp}{{\det}_+}
 
-\usepackage{lettrine}
-
 \begin{document}
-\noindent{\Huge \textbf\textsf{{Matrix completion and semi-definite matrices.}}}
+\title{Matrix completion and semidefinite matrics}
 
-\noindent \textit{by Horst Köhler, Thomas Streuer, Olaf Dreyer}
+\author{Olaf Dreyer\thanks{OD Consulting}
+\and Horst K\"ohler \thanks{Commerzbank AG}
+\and Thomas Streuer \thanks{RIVACON GmbH} }
 
-\vspace{.5cm}
+\date{\today}
+
+\maketitle
+
+\begin{abstract} Here comes the abstract.
+\end{abstract}
+
+\emph{AMS classification:} 15A15; 15A18; 15A83; 15B48
+ \\
+ 
+\emph{Keywords:} positive definite; positive semidefinite; matrix completions; 
 
 \section{Introduction}
+And some introduction.
+
+The Schur complement needs to be introduced here.
 
 \section{Partitioned matrices of maximal rank}\label{sec.partition}
 Let the Hermitian matrix $H\in M_n(\C)$ be partitioned as follows:
@@ -98,11 +62,11 @@ Let the Hermitian matrix $H\in M_n(\C)$ be partitioned as follows:
 		B^\star & C
 	\end{pmatrix},
 \end{equation}
-with $A\in M_k(\C)$, $C\in M_l(\C)$, $1\le k,l\le n-1$, $k+l=n$. Let $V = K\oplus L$ be the decomposition of $V\simeq \C^n$ in accordance with the partition of $H$ in equation (\ref{eqn.defh}) so that $A$ is a map from $K$ to $K$, and $C$ is a map from $L$ to $L$. Let us further assume that $H$ is positive semi-definite. Let $w\in N(A)\subset K$ be an element of the null space of $A$, i.e. let $A w = 0$. For $v=(W,0)^T\in V$ we then have 
+with $A\in M_k(\C)$, $C\in M_l(\C)$, $1\le k,l\le n-1$, $k+l=n$. Let $V = K\oplus L$ be the decomposition of $V\simeq \C^n$ in accordance with the partition of $H$ in equation (\ref{eqn.defh}) so that $A$ is a map from $K$ to $K$, and $C$ is a map from $L$ to $L$. Let us further assume that $H$ is positive semidefinite. Let $w\in N(A)\subset K$ be an element of the nullspace of $A$, i.e. let $A w = 0$. For $v=(w,0)^T\in V$ we then have 
 \begin{equation}
 	v^\star H v=0.
 \end{equation}
-Since $H$ is positive semi-definite this implies (see \cite{matrixanalysis}) that we already have
+Since $H$ is positive semidefinite this implies (see \cite{matrixanalysis}) that we already have
 \begin{equation}
 	Hv = \begin{pmatrix}
 		0 \\
@@ -136,7 +100,7 @@ This implies that the rank of $H$ is less than or equal to the sum of the ranks 
 We have equality if and only if $N(H) = N(A)\oplus N(C)$. In the following, matrices $H$ for which this equality holds, will be of particular interest to us which is why we make the following definition:
 
 \begin{definition}
-	Let $H$ be a positive semi-definite Hermitian matrix that is partitioned as in equation (\ref{eqn.defh}). We say that $H$ is of \emph{maximal rank} if and only if $N(H) = N(A)\oplus N(C)$. 
+	Let $H$ be a positive semidefinite Hermitian matrix that is partitioned as in equation (\ref{eqn.defh}). We say that $H$ is of \emph{maximal rank} if and only if $N(H) = N(A)\oplus N(C)$. 
 \end{definition}
 
 When $H$ is of maximal rank, it vanishes on
@@ -189,20 +153,20 @@ We note a number of properties of the generalized determinant:
 \end{lemma}
 
 \begin{proof}
-	All of these identities follow from the fact that $H = U D U^\star$ for a unitary $U$ and a diagonal $D$ that contains the eigenvalues of $H$ on the diagonal. \qed
+	All of these identities follow from the fact that $H = U D U^\star$ for a unitary $U$ and a diagonal $D$ that contains the eigenvalues of $H$ on the diagonal.
 \end{proof}
 
-We note that the generalized determinant does not have many of the properties the usual determinant has. In particular, it is not a continuous function of $H$, and the generalized determinant of the product of two matrices is not the product of the two determinants. 
+We note that the generalized determinant does not have many of the properties the usual determinant has. In particular, it is not a continuous function of $H$, and the generalized determinant of the product of two matrices is not the product of the two generalized determinants. 
 
 \section{The extensions}\label{sec.ext}
-With the preparations in section \ref{sec.partition} and the definition of the generalized determinant we now want to extent three results: Fischer's inequality, the determinant equality for Schur's complement, and Banachiewicz's form of the inverse of a matrix.
+With the preparations in section \ref{sec.partition}, and the definition of the generalized determinant in the last section, we now want to extent three results: Fischer's inequality, the determinant equality for Schur's complement, and Banachiewicz's form of the inverse of a matrix.
 
 \subsection{Fischer's inequality}
-Fischer's inequality states that for a Hermitian positive semidefinite $H$ as in equation (\ref{eqn.defh}) we have 
+Fischer's inequality states that for a Hermitian positive semidefinite $H$ as in equation (\ref{eqn.defh}) we have (see e.g. \cite{horn}):
 \begin{equation}
 	\det H \le \det A\; \det C.
 \end{equation}
-If $H$ is positive definite, we have equality if and only if $B=0$. If $H$ is singular, the determinant of $H$ vanishes and the inequality is no longer much of a constraint. We can also no longer infer that $B=0$ in the case of equality. 
+Furthermore, if $H$ is positive definite, we have equality if and only if $B=0$. If $H$ is singular, the determinant of $H$ vanishes and the inequality is no longer much of a constraint. We can also no longer infer that $B=0$ in the case of equality. 
 
 We can do better when $H$ is of maximal rank. In this case $H$ vanishes on $N(A)\oplus N(C)$ and is positive definite on 
 \begin{equation}
@@ -274,7 +238,7 @@ The result concerns the inverse of $H$. When $H$ is positive definite its invers
 		- (H/A)^{-1} B^\star A^{-1} & (H/A)^{-1}
 	\end{pmatrix}.
 \end{equation} 
-This is a remarkable formula because to find the of $H$ we just need to invert $A$ and $H/A$. This formula was first established by Banachiewicz \cite{bana} (see also \cite[p.112]{frazer}). We now want to adapt this formula to our situation where $H$ might be singular but is of full rank. 
+This is a remarkable formula because to find the of $H$ we just need to invert $A$ and $H/A$. This formula was first established by Banachiewicz \cite{bana} (see also \cite[p.112]{frazer}). We now want to adapt this formula to our situation where $H$ might be singular but is of maximal rank. 
 
 Again, we start by looking at the restriction $\bar H$ of $H$ to its range $R(A)\oplus R(C)$. $\bar H$ is positive definite and we can express its inverse in the form of equation (\ref{eqn.bana}). In the last section we established that the range and null spaces of $C$ and $H/A$ coincide so that by replacing the inverses with Moore-Penrose inverses we obtain the unique Moore-Penrose inverse of $H$.
 
@@ -389,7 +353,7 @@ A proof of this result can be found in \cite{albert}. We now have:
 	\begin{equation}
 		H \ge 0.
 	\end{equation} 
-	This completes the proof. \qed
+	This completes the proof.
 \end{proof}
 
 This result appeared already in \cite{smith}. We have provided a different proof that makes use of theorem \ref{theo.albert}. 
@@ -397,7 +361,7 @@ This result appeared already in \cite{smith}. We have provided a different proof
 It turns out that the choice of $X$ in theorem \ref{theo.x} gives $H$ unique properties. It is in these characterizations of $X$ that we go beyond the results in \cite{smith} because we include the case in which $H$ is singular. The first result characterizes $X$ as the unique extension of $H$ that maximizes the determinant of $H$. If $H$ is non-singular we can just talk about the regular determinant of $H$. If $H$ is singular we have to use the generalized determinant that we introduced in section \ref{sec.gendet}.
 
 \begin{theorem}
-	Let $H\in M_n(\C)$ be partitioned as in (\ref{eqn.defnewh}) and let $H[\alpha]$ and $H[\beta]$ be positive semidefinite and of full rank. The choice 
+	Let $H\in M_n(\C)$ be partitioned as in (\ref{eqn.defnewh}) and let $H[\alpha]$ and $H[\beta]$ be positive semidefinite and of maximal rank. The choice 
 	\begin{equation}
 		X = B C^+ D
 	\end{equation}
@@ -415,9 +379,9 @@ For a positive semidefinite matrix rank is additive over the Schur complement (s
 	& = \rank\ C + \rank\ H[\alpha]/C + \rank\ H[\beta]/C \\
 	& = \rank\ C + \rank\ A + \rank\ E
 \end{align}
-To establish the last equality we have used the assumption that both $H[\alpha]$ and $H[\beta]$ are of full rank. Thus $X=B C^+ D$ turns $H$ into a matrix of full rank. We now want to show that it is the only such choice that also maximizes the determinant.
+To establish the last equality we have used the assumption that both $H[\alpha]$ and $H[\beta]$ are of maximal rank. Thus $X=B C^+ D$ turns $H$ into a matrix of maximal rank. We now want to show that it is the only such choice that also maximizes the determinant.
 
-Let us now assume that $H$ is positive semidefinite and of full rank so that we can make use of propositions \ref{prop.fischer} and \ref{prop.schur}. Because of proposition \ref{prop.schur} we have
+Let us now assume that $H$ is positive semidefinite and of maximal rank so that we can make use of propositions \ref{prop.fischer} and \ref{prop.schur}. Because of proposition \ref{prop.schur} we have
 \begin{equation}
 	\detp H = \detp C \; \detp H/C.
 \end{equation}
@@ -429,7 +393,7 @@ with equality if and only if
 \begin{equation}
 	X = B C^+ D.
 \end{equation}
-It follows that this $X$ is the unique choice that maximizes the determinant. \qed
+It follows that this $X$ is the unique choice that maximizes the determinant.
 \end{proof}
 
 For a non-singular matrix $H$ we can use the determinant to find the inverse of $H$ (see \cite{matrixanalysis}):
@@ -439,22 +403,22 @@ For a non-singular matrix $H$ we can use the determinant to find the inverse of 
 Because we are expressing $X$ in terms of the given sub-matrices $A, \ldots, E$ of $H$, it is clear that the derivative in equation (\ref{eqn.inverseformula}) vanishes for indices $i$ and $j$ that denote elements of $X$ itself. $H^{-1}$ has zeroes in those places where the matrix $X$ sits in $H$. It turns out that this characteristic uniquely determines $X$, even if $H$ is only positive semidefinite and we have to talk about the Moore-Penrose inverse of $H$ instead.
 
 \begin{theorem}
-	Let $H\in M_n(\C)$ be partitioned as in (\ref{eqn.defnewh}) and let $H[\alpha]$ and $H[\beta]$ be positive semidefinite and of full rank. The choice 
+	Let $H\in M_n(\C)$ be partitioned as in (\ref{eqn.defnewh}) and let $H[\alpha]$ and $H[\beta]$ be positive semidefinite and of maximal rank. The choice 
 	\begin{equation}
 		X = B C^+ D
 	\end{equation}
-	is the unique choice for $X$ for which $H$ is of full rank and for which $H^{+}$ has zeroes in those places where $X$ sits in $H$.
+	is the unique choice for $X$ for which $H$ is of maximal rank and for which $H^{+}$ has zeroes in those places where $X$ sits in $H$.
 \end{theorem}
 
 \begin{proof}
-	Because $H$ is of full rank we can use proposition \ref{prop.bana} to express the Moore-Penrose inverse of $H$ in terms of $C^+$ and $(H/C)^+$. If $H^+$ has zeroes where $X$ is in $H$ then we must have
+	Because $H$ is of maximal rank we can use proposition \ref{prop.bana} to express the Moore-Penrose inverse of $H$ in terms of $C^+$ and $(H/C)^+$. If $H^+$ has zeroes where $X$ is in $H$ then we must have
 	\begin{equation}
 		(H/C)^+ = \begin{pmatrix}
 			(H[\alpha]/C)^+ & 0 \\
 			0 & (H[\beta]/C)^+  
 		\end{pmatrix},
 	\end{equation}
-	which can only be the case if $X=B C^+ D$. \qed
+	which can only be the case if $X=B C^+ D$.
 \end{proof}
 
 For completeness we give the Moore-Penrose inverse for $H$:
