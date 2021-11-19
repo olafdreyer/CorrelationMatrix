@@ -32,7 +32,7 @@
 \begin{document}
 \title{Completing correlation matrices}
 
-\author{Olaf Dreyer\thanks{OD Consulting}
+\author{Olaf Dreyer\thanks{OD Consulting, email: olaf.dreyer@gmail.com}
 \and Horst K\"ohler \thanks{Commerzbank AG}
 \and Thomas Streuer \thanks{RIVACON GmbH} }
 
@@ -49,7 +49,7 @@
 \textbf{JEL:} C02, C63, G12
 
 \section{Introduction}
-Modern financial models are driven by a large number of stochastic variables. These stochastic variables are usually correlated which creates the need to determine the coefficients of the underlying correlation matrix. Since the number of correlation coefficients increases quadratically with the number of stochastic variables, this number can become very large. While it would be desirable to calibrate all these coefficients this is in practice not possible because such a calibration procedure would be too slow, too unstable, or would require calibration instruments for which quotes can not be obtained. The issue of stability is especially important in a risk neutral setup. Daily calibrations might display undesired fluctuations if the calibration is not stable. Hybrid models are another source of undetermined correlation coefficients. Two calibrated models might be parts of a larger model. While the coefficients for the individual models have been determined in separate calibration, the coefficients that mix variables from the two different models are undetermined. In a large model, with many smaller constituent models, the number of such coefficients can constitute the bulk of the matrix. 
+Modern financial models are driven by a large number of stochastic variables. These stochastic variables are usually correlated which creates the need to determine the coefficients of the underlying correlation matrix. Since the number of correlation coefficients increases quadratically with the number of stochastic variables, this number can become very large. While it would be desirable to calibrate all these coefficients this is in practice not possible because such a calibration procedure would be too slow, too unstable, or would require calibration instruments for which quotes can not be obtained. The issue of stability is especially important in a risk neutral setup. Daily calibrations might display undesired fluctuations if the calibration is not stable. Hybrid models are another source of undetermined correlation coefficients. Two calibrated models might be parts of a larger model. While the coefficients for the individual models have been determined in separate calibrations, the coefficients that mix variables from the two different models are undetermined. In a large model, with many smaller constituent models, the number of such coefficients can constitute the bulk of the matrix. 
 
 Faced with this situation, it is tempting to set the missing coefficients to zero. The idea here is that any other choice seems to add arbitrary information. This approach has several shortcomings though. The most important of which is that one might end up with a matrix that is not positive semidefinite and thus not a valid correlation matrix. To obtain a valid matrix further steps are required. One possibility is to use the fact that the set of positive definite correlation matrices is an open set that contains the unit matrix. It is thus always possible to scale the off-diagonal elements of the matrix with a common scale factor $\lambda<1$ and obtain a positive definite matrix. Another possibility is to choose the nearest correlation matrix in a suitable topology (see e.g \cite{higham}). These additional steps might change all the coefficients of the matrix, including those coefficients, that have been obtained in previous calibrations. They also rely on somewhat arbitrary further assumptions like a particular notion of distance on the space of matrices. 
 
@@ -178,7 +178,7 @@ The entropy $S$ of the normal distribution $N_n[\mu,H]$ is given by
 Because we are maximizing the determinant of $H$ we are also maximizing the entropy $S$ of the distribution described by $H$. The $H$ chosen by the $W$ from equation (\ref{eqn.choice}) is the one that puts the fewest constraints on the distribution of $X$ and $Y$. 
 
 \section{The completion procedure}\label{sec.procedure}
-In the last section we have completed the matrix $H$ in the very simple case where there are two known matrices $H_X$ and $H_Y$ with just one shared part $C$. The general case is usually more complicated. Building on the result in \cite{grone} Smith \cite{smith} (see also \cite{ksd} for a more general treatment of the semidefinite case) showed how to solve the general problem by reducing it to a repeated application of the result from the previous section. We will discuss the required steps in this section by looking at a particular example: the cross currency model.
+In the last section we have completed the matrix $H$ in the very simple case where there are two known matrices $H_X$ and $H_Y$ with just one shared part $C$. The general case is usually more complicated. Building on the result in \cite{grone} Smith \cite{smith} (see also \cite{georgescu}) showed how to solve the general problem by reducing it to a repeated application of the result from the previous section. We will discuss the required steps in this section by looking at a particular example: the cross currency model.
 
 Our model will consist of two interest rate models; one for the domestic currency $E$ and one the foreign currency $A$. These two currencies are linked by an exchange rate $X$. We will model the two interest rates and the exchange rate with stochastic volatility models so that we have a total of six stochastic variables:
 \begin{equation}\label{eqn.stochvar}
@@ -374,23 +374,27 @@ Since the path connecting the two cliques passes through $\alpha_E$ this tree sa
 \end{figure}
 
 \section{Conclusion}\label{sec.conclusion}
-In this paper we have described a method to complete an insufficiently specified correlation matrix. Because financial models are getting more complex such matrices are a common occurrence. 
+The increasing size of financial models has made insufficiently specified correlation matrices a common occurrence. The larger the model the fewer correlation coefficients are usually known. We thus need a rational for how to deal with these incomplete matrices as well as a robust method for implementing this rational. In this paper we have supplied both. We have argued that the correct way to complete the matrix is the one that maximizes the entropy of the distribution described by the matrix. This is the matrix with the maximal determinant. We have then shown how to actually construct this matrix with the maximal determinant. It is straight forward to implement the steps outlined in section \ref{sec.procedure}. Even for models with a large number of stochastic variables the procedure is both robust and fast. 
 
+\vspace{2cm}
 
+\section*{Disclaimer}
+The views and opinions expressed here are those of the authors and do not necessarily represent the views and opinions of their employers.
 
 \section*{Acknowledgement}
 The authors would like to thank Patrick B\"uchel for his support during the creation of this work; and Nataliya Koval, and Roland Seydel for insightful discussions on the subject. 
 
 \begin{thebibliography}{MM}
 	\bibitem[Higham, 2002]{higham}, Higham, N. J. (2002). Computing the nearest correlation matrix - a problem from finance. \textit{IMA Journal of Numerical Analysis} 22: 329 - 343.
-		\bibitem[Grone et~al., 1984]{grone} Grone R., Johnson C.R., Sa E., Wolkowicz H. (1984). Positive definite completion of partial Hermitian matrices. \textit{Linear Algebra Appl.} 58: 109--124.
-	\bibitem[Smith, 2008]{smith} Smith, R. L. (2008). The positive definite completion problem revisited. \textit{Linear Algebra and its Applications} 429:1442 -- 1452.
+	\bibitem[Grone et~al., 1984]{grone} Grone R., Johnson C.R., Sa E., Wolkowicz H. (1984). Positive definite completion of partial Hermitian matrices. \textit{Linear Algebra Appl.} 58: 109--124.
+	\bibitem[Smith, 2008]{smith} Smith, R. L. (2008). The positive definite completion problem revisited. \textit{Linear Algebra and its Applications} 429:1442 -- 1452.	
+    \bibitem[Georgescu, 2018]{georgescu} Georgescu, D. I., Higham, N. J. \& Peters, G. W. (2018). Explicit solutions to correlation matrix completion problems, with an application to risk management and insurance. \textit{Roy Soc Open Sci} 5: 172348.
 	\bibitem[Rao, 2002]{rao} C. R. Rao (2002). \textit{Linear Statistical Inference and its Applications, 2nd edition}. John Wiley \& Sons, Inc.
 	\bibitem[Cottle, 1974]{cottle} Cottle, R. W. (1974). Manifestations of the Schur complement. \textit{Linear Algebra and its Applications} 8:189--211. 
 	\bibitem[Haynsworth, 1968]{hayns} Haynsworth, E.V. (1968), Determination of the inertia of a partitioned Hermitian matrix,  \textit{Linear  Algebra and its Applications} 1:73--81.
 	\bibitem[Schur, 1917]{schur} Schur, J. (1917). \"Uber Potenzreihen, die im Innern des Einheitskreises beschr\"ankt sind. \textit{Journal f\"ur die reine und angewandte Mathematik} 147: 205--232.
 	\bibitem[Horn, 2005]{horn} Horn, R. A. (2005). Basic  Properties  of  the  Schur  Complement, 17--46. In Fuzhen Zhang (Ed.) \textit{The Schur complement and its application}. Springer.
-	\bibitem[Dreyer et~al., 2021] {ksd} our other paper ...
+	% \bibitem[Dreyer et~al., 2021] {ksd} our other paper ...
 	\bibitem[Golumbic, 2004]{golumbic} Golumbic, M. C. (2004). \textit{Algorithmic Graph Theory and Perfect Graphs}. Elsevier. 
 	\bibitem[Blair et~al., 1993]{blair} Blair, J. R. S., Peyton, B. (1993). An introduction to chordal graphs and clique trees, 1 -- 29. In George, A., Gilbert, J. R., Liu, J. W. H. (Eds.). \textit{Graph Theory and Sparse Matrix Computation}, The IMA Volumes in Mathematics and its Applications 56. Springer.
 \end{thebibliography}
