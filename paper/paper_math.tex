@@ -31,28 +31,75 @@
 \newcommand{\detp}{{\det}_+}
 
 \begin{document}
-\title{Matrix completion and semidefinite matrics}
+\title{Matrix completion and semidefinite matrices}
 
-\author{Olaf Dreyer\thanks{OD Consulting}
-\and Horst K\"ohler \thanks{Commerzbank AG}
-\and Thomas Streuer \thanks{RIVACON GmbH} }
+\author{Olaf Dreyer\thanks{OD Consulting, Frankfurt am Main, email: olaf.dreyer@gmail.com}}
 
 \date{\today}
 
 \maketitle
 
-\begin{abstract} Here comes the abstract.
+\begin{abstract} Positive semidefinite Hermitian matrices that are not fully specified but whose underlying graph is chordal can be completed to a positive semidefinite Hermitian matrix. For positive definite partial Hermitian matrices this completion can be characterized as the unique completion that maximizes the determinant of the matrix. It is also the unique matrix whose inverse has zeroes in the places that were undetermined in the original matrix. This paper extends these characterizations to the case of semidefinite matrices. Because the determinant vanishes for singular matrices and the inverse does not exist we introduce a generalized determinant and use generalized inverses to formulate equivalent characterizations in the semidefinite case. For a class of matrices that are singular but of maximal rank unique characterizations can be given just as in the positive definite case. 
 \end{abstract}
 
-\emph{AMS classification:} 15A15; 15A18; 15A83; 15B48
+\emph{AMS classification:} 15A10; 15A15; 15A18; 15A83; 15B48
  \\
  
-\emph{Keywords:} positive definite; positive semidefinite; matrix completions; 
+\emph{Keywords:} positive definite; positive semidefinite; matrix completions 
 
 \section{Introduction}
-And some introduction.
+The question of which partial Hermitian matrices $H$ can be completed to give a fully specified positive definite Hermitian matrix was solved in \cite{grone}. The solution provided in \cite{grone} gave one element of the completion at a time. While giving the correct solution the practical implementation of this procedure was rather tedious. In \cite{smith} a faster procedure was proposed that delivered the same matrix in far fewer steps by focusing on whole blocks at once. 
 
-The Schur complement needs to be introduced here.
+	The starting point of both procedures is the graph $\gamma$ that is constructed from the incomplete matrix. The vertices of $\gamma$ are given by the rows $i$, $i=1,\ldots,n$, (or columns) of the matrix $H$. Two vertices $i$ and $j$ of $\gamma$ are connected by an edge $e$ if the element 
+	\begin{equation}
+		a_{ij}
+	\end{equation}
+	of the matrix is given. There is now one condition that the graph $\gamma$ has to satisfy for the procedure to work. The graph has to be \emph{chordal}. A graph is chordal if every loop of four or more elements has a chord, i.e. an edge that connects two nonconsecutive elements of the loop (for an introduction to graph theoretic notions see \cite{golumbic}). Assuming that the graph is chordal we now proceed by constructing another graph $\Gamma$. The vertices of $\Gamma$ are given by the cliques of $\gamma$ (a clique is a maximal set of vertices that are all connected to each other; again see \cite{golumbic}) and two vertices of $\Gamma$ are connected if the two corresponding cliques have a nonempty intersection (see figure \ref{fig.allgraphs}).
+
+\begin{figure}[hbt]
+  \begin{center}
+  	\includegraphics[width=10cm]{img/allGraphs.png}
+  \end{center}
+  \caption{a) Given an incomplete matrix $H$ we can construct a graph $\gamma$ that has an edge for all the specified elements of the matrix. The vertices of the graph are the rows (or columns) of the matrix. For the completion procedure to work the graph $\gamma$ needs to be chordal. The graph shown here is chordal because the central loop only has three elements. b) The dashed lines show the cliques of $\gamma$. c) The cliques are the vertices of the new graph $\Gamma$. Edges in $\Gamma$ connect cliques with a nonempty intersection.}\label{fig.allgraphs}
+\end{figure}
+
+The contribution of \cite{smith} is to show that the completion procedure can be reduced to edges of the graph $\Gamma$. Any edge in $\Gamma$ is given by two cliques $\alpha$ and $\beta$ that have a nonzero intersection $\alpha\cap\beta\ne\emptyset$. Let 
+\begin{equation}
+	H[\alpha] = \begin{pmatrix}
+		A & B \\
+		B^\star & C 
+	\end{pmatrix}
+\end{equation}
+be the submatrix of $H$ with rows and column indices in $\alpha$ and let 
+\begin{equation}
+	H[\beta] = \begin{pmatrix}
+		C & D \\
+		D^\star & E 
+	\end{pmatrix}
+\end{equation}
+be the submatrix of $H$ with rows and column indices in $\beta$. We then have
+\begin{equation}
+	H[\alpha\cap\beta] = C.
+\end{equation}
+We can combine these two matrices in one large matrix with row and column indices in $\alpha\cup\beta$,
+\begin{equation}
+	H[\alpha\cup\beta] = \begin{pmatrix}
+		A & B & X \\
+		B^\star & C & D \\
+		X^\star & D^\star & E
+	\end{pmatrix},
+\end{equation}
+where the matrix $X$ remains to be specified. It was now shown in \cite[Theorem 3.2.]{smith} that a partial positive semidefinite matrix $H[\alpha\cup\beta]$ can be completed to a positive semidefinite matrix by choosing
+\begin{equation}\label{eqn.defx}
+	X = B C^+ D,
+\end{equation}
+where $C^+$ denotes the Moore-Penrose inverse of $C$ (see \cite{roger} and \cite{matrixanalysis}). Note that the matrix does not need to be positive definite for the construction to work. It it sufficient for the matrix to be positive \emph{semi}definite. 
+
+If the matrix is positive definite the choice of $X$ in equation (\ref{eqn.defx}) can be uniquely characterized in two ways. First it is the choice that maximizes the determinant of the completed matrix. It is also the choice for which the inverse of $H[\alpha\cup\beta]$ has zeroes in those places where $X$ used to be. 
+
+We see that the treatment of positive definite and positive semidefinite matrices differs. For positive definite matrices the completion in equation (\ref{eqn.defx}) has properties that uniquely determine it. For the semidefinite case we are just left with the existence result. Since the determinant of a singular matrix vanishes and since the inverse of a singular matrix does not exist it is not clear if we can hope to improve this situation. 
+
+In this paper show we now make two contributions. The first contribution is a new prove that the $X$ from equation (\ref{eqn.defx}) gives a positive semidefinite completion of $H[\alpha\cup\beta]$. We then show that we can extend the uniqueness results to the semidefinite case. To do this we need to introduce a generalized determinant that gives the determinant of the nonsingular part of the matrix. This determinant does not have many of the nice properties that the usual determinant has. If we restrict our attention to a special class of matrices though we can prove three results that hold for positive definite matrices to the case of positive semidefinite matrices: Fischer's inequality, the Schur determinant lemma, and Banachiewicz's form of the inverse. These three results allow us to extend the uniqueness results to semidefinite matrices. We start by introducing the class of matrices for which our results will be valid. 
 
 \section{Partitioned matrices of maximal rank}\label{sec.partition}
 Let the Hermitian matrix $H\in M_n(\C)$ be partitioned as follows:
@@ -100,7 +147,7 @@ This implies that the rank of $H$ is less than or equal to the sum of the ranks 
 We have equality if and only if $N(H) = N(A)\oplus N(C)$. In the following, matrices $H$ for which this equality holds, will be of particular interest to us which is why we make the following definition:
 
 \begin{definition}
-	Let $H$ be a positive semidefinite Hermitian matrix that is partitioned as in equation (\ref{eqn.defh}). We say that $H$ is of \emph{maximal rank} if and only if $N(H) = N(A)\oplus N(C)$. 
+	Let $H$ be a positive semidefinite Hermitian matrix that is partitioned as in equation (\ref{eqn.defh}). We say that $H$ is of \emph{maximal rank} if and only if $N(H) = N(A)\oplus N(C)$\footnote{We should be precise and say that $H$ is positive semidefinite with respect to the partition in equation (\ref{eqn.defh}). We will refrain from doing this and rely on the reader to infer the partition from the context.}. 
 \end{definition}
 
 When $H$ is of maximal rank, it vanishes on
@@ -111,10 +158,10 @@ and is positive definite when restricted to the sum of the ranges of $A$ and $C$
 \begin{equation}
 	R(A) \oplus R(C).
 \end{equation} 
-We will use this property to extend results that are valid for positive definite matrices to partitioned matrices of maximal rank. Before we can state these results we need to introduce one more notion.
+in section \ref{sec.ext} we will use this property to extend results that are valid for positive definite matrices to partitioned matrices of maximal rank. We need one more notion before we can formulate these results.
 
 \section{The generalized determinant}\label{sec.gendet}
-A Hermitian matrix $H$ defines a non-singular map from its range $R(H)$ to its range $R(H)$. If $H$ is singular its determinant vanishes. The determinant thus contains no information about $H$ restricted to $R(H)$. To recover this information we introduce a generalized determinant $\detp$:
+A Hermitian matrix $H$ defines a nonsingular map from its range $R(H)$ to its range $R(H)$. If the nullspace $N(H)$ is nonzero, i.e. if $H$ is singular, the determinant of $H$ vanishes. The determinant thus contains no information about the nonsingular map that is $H$ restricted to $R(H)$. To recover this information we introduce a generalized determinant $\detp$:
 
 \begin{definition}\label{def.gendet}
 	Let $H$ be Hermitian. Let $\bar H$ be $H$ restricted to the range of $H$:
@@ -156,23 +203,31 @@ We note a number of properties of the generalized determinant:
 	All of these identities follow from the fact that $H = U D U^\star$ for a unitary $U$ and a diagonal $D$ that contains the eigenvalues of $H$ on the diagonal.
 \end{proof}
 
-We note that the generalized determinant does not have many of the properties the usual determinant has. In particular, it is not a continuous function of $H$, and the generalized determinant of the product of two matrices is not the product of the two generalized determinants. 
+We note that the generalized determinant lacks many of the properties the usual determinant has. In particular, it is not a continuous function of $H$, and the generalized determinant of the product of two matrices is not the product of the two generalized determinants. 
 
 \section{The extensions}\label{sec.ext}
-With the preparations in section \ref{sec.partition}, and the definition of the generalized determinant in the last section, we now want to extent three results: Fischer's inequality, the determinant equality for Schur's complement, and Banachiewicz's form of the inverse of a matrix.
+With the preparations in section \ref{sec.partition}, and the definition of the generalized determinant in the last section, we now want to extent three results to singular matrices: Fischer's inequality, the determinant equality for the Schur complement, and Banachiewicz's form of the inverse of a matrix.
 
 \subsection{Fischer's inequality}
 Fischer's inequality states that for a Hermitian positive semidefinite $H$ as in equation (\ref{eqn.defh}) we have (see e.g. \cite{horn}):
 \begin{equation}
 	\det H \le \det A\; \det C.
 \end{equation}
-Furthermore, if $H$ is positive definite, we have equality if and only if $B=0$. If $H$ is singular, the determinant of $H$ vanishes and the inequality is no longer much of a constraint. We can also no longer infer that $B=0$ in the case of equality. 
+Furthermore, if $H$ is positive definite, we have equality if and only if $B=0$. If $H$ is singular, the determinant of $H$ vanishes and the inequality is no longer much of a constraint. We can also no longer infer that $B$ vanishes in the case of equality. 
 
 We can do better when $H$ is of maximal rank. In this case $H$ vanishes on $N(A)\oplus N(C)$ and is positive definite on 
 \begin{equation}
 	R(A)\oplus R(C).
 \end{equation}
-We now look at the restriction of $H$ and all its sub-matrices to this space and use the usual Fischer inequality there. As in definition \ref{def.gendet}, we denote the restriction of $H$ to its range by $\bar H$. We obtain
+We now look at the restriction of $H$ and all its submatrices to this space and use the Fischer's inequality there. Note that because $H$ is positive semidefinite it has the column (and row) inclusion property and we have
+\begin{equation}
+	N(A) \subset N(B^\star) 
+\end{equation}
+and
+\begin{equation}
+	R(B^\star) \subset R(C). 
+\end{equation}
+$B^\star$ thus vanishes on the complement of $R(A)$ and maps into $R(C)$. The restriction of $B^\star$ to $R(A)$ thus keeps the nontrivial part of $B^\star$. The same is true for $B$ and its restriction to $R(C)$. As in definition \ref{def.gendet}, we denote the restriction of $H$ to its range by $\bar H$. We obtain
 \begin{align}
 	\detp H & = \det \bar H \\
 	&\le \det \bar A\; \det \bar C \\
@@ -195,11 +250,38 @@ We thus have the following result:
 Let us note that we arrived at this result in two steps. Because $H$ is positive semidefinite we know that $B$ restricted to $N(C)$ is zero. That the restriction of $B$ to the range $R(C)$ is also zero follows from Fischer's equality for the positive definite matrix that is $H$ restricted to $R(A)\oplus R(C)$.
 
 \subsection{Schur complement}
-We now turn our attention to the Schur complement. For a positive definite $H$ Schur showed that
+The Schur complement arises naturally when using Gaussian elimination to solve a linear equation. Let $H$ be as in equation (\ref{eqn.defh}) and let us assume we want to solve
+\begin{align}
+0 & = H \begin{pmatrix}
+		k \\
+		l
+	\end{pmatrix} \\
+	& = \begin{pmatrix}
+		A k + B l \\
+		B^\star k + C l
+ \end{pmatrix}	\label{eqn:lineq}
+\end{align}
+Assuming that $A$ is invertible we can solve for $k$ in the first equation of (\ref{eqn:lineq}) to obtain
+\begin{equation}\label{eqn.gauss1}
+	k = - A^{-1}B l.
+\end{equation}
+The second equation of (\ref{eqn:lineq}) then gives
+\begin{equation}\label{eqn.gauss2}
+	(C - B^\star A^{-1}B) l = 0.
+\end{equation}
+The expression in the parentheses is called the Schur complement $H/A$ of $A$ in $H$:
+\begin{equation}
+	H/A = C - B^\star A^{-1}B
+\end{equation}
+For a positive semidefinite matrix $H$ we may generalize the definition to
+\begin{equation}
+	H/A = C - B^\star A^+B,
+\end{equation}
+where $A^+$ is the Moore-Penrose inverse of $A$ (see \cite{roger} and \cite{matrixanalysis}). Note that the choice of generalized inverse does not matter here since $R(B)\subset R(A)$. Emilie Haynsworth introduced the name and showed that the Schur complement possesses many interesting properties \cite{hayns} (see \cite{horn} for more details). In \cite{schur} Issai Schur showed that for a positive definite $H$ the determinant of $H$ satisfies
 \begin{equation}
 	\det H = \det A\; \det H/A.
 \end{equation}
-We again focus our attention on $R(A)\oplus R(C)$ where $H$ is positive definite. Using the notation from the previous section we obtain:
+We want to show now that this equality holds also for the generalized determinant. Again, we focus our attention on $R(A)\oplus R(C)$ where $H$ is positive definite. Using the notation from the previous section we obtain:
 \begin{align}
 	\detp H & = \det \bar H \\
 	& = \det \bar A \; \det \bar H / \bar A \\
@@ -210,7 +292,7 @@ We need to convince ourselves that the last determinant is equal to $\detp H/A$.
 	N(H/A) & = N( C - B^\star A^+ B ) \\ 
 	& = N(C).
 \end{align}
-We already know that $N(C) \subset N(H/A)$. To show equality let $l\in N(H/A)$ and set
+We already know that $N(C) \subset N(H/A)$. To show equality let $l\in N(H/A)$. This $l$ thus satisfies equation (\ref{eqn.gauss2}) that was obtained through Gaussian elimination. We define $k$ according to equation (\ref{eqn.gauss1}): 
 \begin{equation}
 	k = - A^+ B l.
 \end{equation}
@@ -231,14 +313,14 @@ Since $H$ is of maximal rank this implies that $(k,l)^T\in N(A)\oplus N(C)$. In 
 \end{proposition}
 
 \subsection{The inverse}
-The result concerns the inverse of $H$. When $H$ is positive definite its inverse can be written as
+The last result concerns the inverse of $H$. When $H$ is positive definite its inverse can be written as
 \begin{equation}\label{eqn.bana}
 	H^{-1} = \begin{pmatrix}
 		A^{-1} + A^{-1}B(H/A)^{-1}B^\star A^{-1} & - A^{-1} B (H/A)^{-1} \\
 		- (H/A)^{-1} B^\star A^{-1} & (H/A)^{-1}
 	\end{pmatrix}.
 \end{equation} 
-This is a remarkable formula because to find the of $H$ we just need to invert $A$ and $H/A$. This formula was first established by Banachiewicz \cite{bana} (see also \cite[p.112]{frazer}). We now want to adapt this formula to our situation where $H$ might be singular but is of maximal rank. 
+This is a remarkable formula because to find the inverse of $H$ we just need to invert $A$ and $H/A$. This formula was first established by Banachiewicz \cite{bana} (see also \cite[p.112]{frazer}). We now want to adapt this formula to our situation where $H$ might be singular but is of maximal rank. 
 
 Again, we start by looking at the restriction $\bar H$ of $H$ to its range $R(A)\oplus R(C)$. $\bar H$ is positive definite and we can express its inverse in the form of equation (\ref{eqn.bana}). In the last section we established that the range and null spaces of $C$ and $H/A$ coincide so that by replacing the inverses with Moore-Penrose inverses we obtain the unique Moore-Penrose inverse of $H$.
 
@@ -263,15 +345,15 @@ Let $H$ be a Hermitian matrix in $M_n(\C)$ that is partitioned as follows:
 		X^\star & D^\star & E
 	\end{pmatrix}
 \end{equation}
-To denote sub-matrices of $H$ we use the notation from \cite{matrixanalysis}. For a set $\alpha\subset \{1, \ldots, n\}$ we let
+To denote submatrices of $H$ we use the notation from \cite{matrixanalysis}. For a set $\alpha\subset \{1, \ldots, n\}$ we let
 \begin{equation}
 	H[\alpha]
 \end{equation}
-be the sub-matrix of $H$ with row and column indices in $\alpha$. For $\alpha,\beta\subset \{1, \ldots, n\}$ we let
+be the submatrix of $H$ with row and column indices in $\alpha$. For $\alpha,\beta\subset \{1, \ldots, n\}$ we let
 \begin{equation}
 	H[\alpha, \beta] 
 \end{equation}
-be the sub-matrix with row indices in $\alpha$ and column indices in $\beta$. Now let $\alpha$ and $\beta$ be such that
+be the submatrix with row indices in $\alpha$ and column indices in $\beta$. Now let $\alpha$ and $\beta$ be such that
 \begin{equation}
 	H[\alpha] = \begin{pmatrix}
 		A & B \\
@@ -358,7 +440,7 @@ A proof of this result can be found in \cite{albert}. We now have:
 
 This result appeared already in \cite{smith}. We have provided a different proof that makes use of theorem \ref{theo.albert}. 
 
-It turns out that the choice of $X$ in theorem \ref{theo.x} gives $H$ unique properties. It is in these characterizations of $X$ that we go beyond the results in \cite{smith} because we include the case in which $H$ is singular. The first result characterizes $X$ as the unique extension of $H$ that maximizes the determinant of $H$. If $H$ is non-singular we can just talk about the regular determinant of $H$. If $H$ is singular we have to use the generalized determinant that we introduced in section \ref{sec.gendet}.
+It turns out that the choice of $X$ in theorem \ref{theo.x} gives $H$ unique properties. It is in these characterizations of $X$ that we go beyond the results in \cite{smith} because we include the case in which $H$ is singular. The first result characterizes $X$ as the unique extension of $H$ that maximizes the determinant of $H$. If $H$ is nonsingular we can just talk about the regular determinant of $H$. If $H$ is singular we have to use the generalized determinant that we introduced in section \ref{sec.gendet}.
 
 \begin{theorem}
 	Let $H\in M_n(\C)$ be partitioned as in (\ref{eqn.defnewh}) and let $H[\alpha]$ and $H[\beta]$ be positive semidefinite and of maximal rank. The choice 
@@ -396,11 +478,12 @@ with equality if and only if
 It follows that this $X$ is the unique choice that maximizes the determinant.
 \end{proof}
 
-For a non-singular matrix $H$ we can use the determinant to find the inverse of $H$ (see \cite{matrixanalysis}):
+For a nonsingular matrix $H$ we can use the determinant to find the inverse of $H$ (see \cite{matrixanalysis}):
 \begin{equation}\label{eqn.inverseformula}
 	H^{-1} = \frac{1}{\det H}\left(\frac{\partial}{\partial h_{ij}}\det H \right)^T
 \end{equation}
-Because we are expressing $X$ in terms of the given sub-matrices $A, \ldots, E$ of $H$, it is clear that the derivative in equation (\ref{eqn.inverseformula}) vanishes for indices $i$ and $j$ that denote elements of $X$ itself. $H^{-1}$ has zeroes in those places where the matrix $X$ sits in $H$. It turns out that this characteristic uniquely determines $X$, even if $H$ is only positive semidefinite and we have to talk about the Moore-Penrose inverse of $H$ instead.
+
+Since $X$ was chosen such that the determinant is maximal the derivative in equation (\ref{eqn.inverseformula}) vanishes for indices $i$ and $j$ that denote elements of $X$ itself. It follows that $H^{-1}$ has zeroes in those places where the matrix $X$ sits in $H$. It turns out that this characteristic uniquely determines $X$, even if $H$ is only positive semidefinite and we have to talk about the Moore-Penrose inverse of $H$ instead.
 
 \begin{theorem}
 	Let $H\in M_n(\C)$ be partitioned as in (\ref{eqn.defnewh}) and let $H[\alpha]$ and $H[\beta]$ be positive semidefinite and of maximal rank. The choice 
@@ -411,7 +494,7 @@ Because we are expressing $X$ in terms of the given sub-matrices $A, \ldots, E$ 
 \end{theorem}
 
 \begin{proof}
-	Because $H$ is of maximal rank we can use proposition \ref{prop.bana} to express the Moore-Penrose inverse of $H$ in terms of $C^+$ and $(H/C)^+$. If $H^+$ has zeroes where $X$ is in $H$ then we must have
+	Because $H$ is of maximal rank we can use proposition \ref{prop.bana} to express the Moore-Penrose inverse of $H$ in terms of $C^+$ and $(H/C)^+$. If $H^+$ is to have zeroes where $X$ is in $H$ then we must have
 	\begin{equation}
 		(H/C)^+ = \begin{pmatrix}
 			(H[\alpha]/C)^+ & 0 \\
@@ -434,22 +517,27 @@ with
 \begin{equation}
 	\Xi = C^+ + C^+ B^\star (H[\alpha]/C)^+ B C^+ + C^+ D (H[\beta]/C)^+ D^\star C^+.
 \end{equation}
+
 \section{Conclusion}
 
+
+
+\section*{Acknowledgement}
+I would like to thank Patrick B\"uchel for his support during the creation of this work as well as Horst K\"ohler and Thomas Streuer for their initial push to look into maximal determinant completions of matrices. 
+
 \begin{thebibliography}{MM}
+	\bibitem{grone} R. Grone, C. R. Johnson, E. Sa, H. Wolkowicz, Positive definite completions of partial Hermitian matrices, Linear Algebra Appl. 58 (1984) 109-124.
+	\bibitem{smith} Smith, R. (2008). The positive definite completion problem revisited Linear Algebra and its Applications  429(7), 1442-1452. https://dx.doi.org/10.1016/j.laa.2008.04.020
+	\bibitem{golumbic} M.C. Golumbic, W. Rheinboldt, Algorithmic Graph Theory and Perfect Graphs, 1st edition, Elsevier Inc, Academic Press, 1980.
+	\bibitem{roger} Penrose, R. (1955). A generalized inverse for matrices Mathematical Proceedings of the Cambridge Philosophical Society  51(3), 406-413. https://dx.doi.org/10.1017/s0305004100030401
 	\bibitem{matrixanalysis} Roger A. Horn, Charles R. Johnson, \emph{Matrix Analysis}, 2nd Edition, Cambridge University Press, 2013.
+	\bibitem{hayns} Emilie Virginia Haynsworth, Determination of the inertia of a partitioned Hermitian matrix,  Linear  Algebra and its Applications \textbf{1}, 1968, 73--81.
+	\bibitem{horn} Roger A. Horn, Basic  Properties  of  the  Schur  Complement. In Fuzhen Zhang (Ed.) The Schur complement and its application (17--46). Springer, 2005.
 	\bibitem{schur} J. Schur, Über Potenzreihen, die im Innern des Einheitskreises beschränkt sind, Journal für die reine und angewandte Mathematik \textbf{147}, 205 -- 232, 1917.
 	\bibitem{bana} T. Banachiewicz, Zur Berechnung der Determinanten, wie auch der Inversen, und zur darauf basierten Auflösung der Systeme linearer Gleichungen, Acta Astronom. S\'er. C 3, 41--67, 1937.
 	\bibitem{frazer} Frazer, R., Duncan, W., Collar, A. (1938). Elementary Matrices And Some Applications To Dynamics And Differential Equations, Cambridge University Press, 1938.
 	\bibitem{ouellette} Ouellette, D. (1981). Schur complements and statistics Linear Algebra and its Applications  36, 187-295. https://dx.doi.org/10.1016/0024-3795(81)90232-9
 	\bibitem{albert} Albert, A. (1969). Conditions for Positive and Nonnegative Definiteness in Terms of Pseudoinverses SIAM Journal on Applied Mathematics  17(2), 434-440. https://dx.doi.org/10.1137/0117041
-	\bibitem{smith} Smith, R. (2008). The positive definite completion problem revisited Linear Algebra and its Applications  429(7), 1442-1452. https://dx.doi.org/10.1016/j.laa.2008.04.020	
-	% older stuff
-	\bibitem{hayns} Emilie Virginia Haynsworth, Determination of the inertia of a partitioned Hermitian matrix,  Linear  Algebra and its Applications \textbf{1}, 1968, 73--81.
-	\bibitem{horn} Roger A. Horn, Basic  Properties  of  the  Schur  Complement. In Fuzhen Zhang (Ed.) The Schur complement and its application (17--46). Springer, 2005.
-	\bibitem{rao} C. Radharkishna Rao, Linear Statistical Inference and its Applications, 2nd edition, John Wiley \& Sons, Inc, 2002.
-	\bibitem{cottle} Richard W. Cottle, Manifestations of the Schur complement, Linear Algebra and its Applications \textbf{8}, 1974, 189--211. 
-	\bibitem{roger} Penrose, R. (1955). A generalized inverse for matrices Mathematical Proceedings of the Cambridge Philosophical Society  51(3), 406-413. https://dx.doi.org/10.1017/s0305004100030401
 \end{thebibliography}
 
 \appendix
