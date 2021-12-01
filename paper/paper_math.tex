@@ -39,7 +39,7 @@
 
 \maketitle
 
-\begin{abstract} For positive semidefinite Hermitian matrices that are not fully specified can be completed to a positive definite Hermitian matrix provided the underlying graph of the matrix is chordal. For positive definite partial Hermitian matrices certain unique completions can be singled out. The completion that maximizes the determinant of the matrix is unique. This is also the unique matrix whose inverse has zeroes in those places that were undetermined in the original matrix. This paper extends these uniqueness results to the case of semidefinite matrices. Because the determinant vanishes for singular matrices and because the inverse does not exist we introduce a generalized determinant and use generalized inverses to formulate equivalent characterizations in the semidefinite case. For a class of matrices that are singular but of maximal rank unique characterizations can be given just as in the positive definite case. 
+\begin{abstract} Positive semidefinite Hermitian matrices that are not fully specified can be completed to a positive semidefinite Hermitian matrix provided their underlying graph is chordal. If the matrix is positive definite the completion can be uniquely characterized as the matrix that maximizes the determinant, or as the matrix whose inverse has zeroes in those places that were undetermined in the original matrix. This paper extends these uniqueness results to the case of semidefinite matrices. Because the determinant vanishes for singular matrices, and because the inverse does not exist, we introduce a generalized determinant and use generalized inverses to formulate equivalent characterizations in the semidefinite case. For a class of matrices that are singular but of maximal rank unique characterizations can be given, just as in the positive definite case. 
 \end{abstract}
 
 \emph{AMS classification:} 15A10; 15A15; 15A18; 15A83; 15B48
@@ -48,7 +48,7 @@
 \emph{Keywords:} positive definite; positive semidefinite; matrix completions 
 
 \section{Introduction}
-The question of which partial Hermitian matrices $H$ can be completed to give a fully specified positive definite Hermitian matrix was solved in \cite{grone}. The solution provided in \cite{grone} was constructive but only gave one element of the completion with each step. While giving the correct solution the practical implementation of this procedure was rather tedious. In \cite{smith} a faster procedure was proposed that delivered the same matrix in far fewer steps by focusing on whole blocks of the matrix at once. 
+The question of which partial Hermitian matrices $H$ can be completed to give a fully specified positive definite Hermitian matrix was solved in \cite{grone}. The solution provided in \cite{grone} was constructive but only gave one element of the completion with each step. While giving the correct solution, the practical implementation of this procedure was rather tedious. In \cite{smith} a faster procedure was proposed that delivered the same matrix in far fewer steps by focusing on whole blocks of the matrix at once. 
 
 The starting point of both procedures is the graph $\gamma$ that is constructed from the partial matrix. The vertices of $\gamma$ are given by the rows (or columns) $i$, $i=1,\ldots,n$, of the matrix $H$. Two vertices $i$ and $j$ of $\gamma$ are connected by an edge $e$ if the element 
 	\begin{equation}
@@ -99,7 +99,7 @@ If the matrix is positive definite the choice of $X$ in equation (\ref{eqn.defx}
 
 We see that the treatment of positive definite and positive semidefinite matrices differs. For positive definite matrices the completion in equation (\ref{eqn.defx}) has properties that uniquely determine it. For the semidefinite case we are just left with the existence result. Since the determinant of a singular matrix vanishes and since the inverse of a singular matrix does not exist it is not clear if we can hope to improve this situation. 
 
-In this paper we now make two contributions. The first contribution is a new proof that the $X$ from equation (\ref{eqn.defx}) gives a positive semidefinite completion of $H[\alpha\cup\beta]$. We then extend the uniqueness results to the semidefinite case. To do this we need to introduce a generalized determinant that gives the determinant of the nonsingular part of the matrix. This determinant lacks many of the nice properties that the usual determinant has. If we restrict our attention to a special class of matrices though we can prove three results that hold for positive definite matrices: Fischer's inequality, the Schur determinant lemma, and Banachiewicz's form of the inverse. These three results will then be used to uniquely characterize the completion in equation (\ref{eqn.defx}) for semidefinite matrices. 
+In this paper we now make two contributions. The first contribution is a new proof that the $X$ from equation (\ref{eqn.defx}) gives a positive semidefinite completion of $H[\alpha\cup\beta]$. We then extend the uniqueness results to the semidefinite case. To do this we need to introduce a generalized determinant that gives the determinant of the nonsingular part of the matrix. This determinant lacks many of the nice properties that the usual determinant has. If we restrict our attention to a special class of matrices, though, we can prove three results that hold for positive definite matrices: Fischer's inequality, the Schur determinant lemma, and Banachiewicz's form of the inverse. These three results will then be used to uniquely characterize the completion in equation (\ref{eqn.defx}) for semidefinite matrices. 
 
 We start by introducing the class of matrices for which our results are valid. 
 
@@ -235,7 +235,7 @@ $B^\star$ thus vanishes on the complement of $R(A)$ and maps into $R(C)$. The re
 	&\le \det \bar A\; \det \bar C \\
 	& = \detp A\; \detp C.
 \end{align}
-Because we are looking at the restriction of $H$ to $R(A)\oplus R(C)$ and because it is positive definite on $R(A)\oplus R(C)$, we also get that $B$, when restricted to $R(C)$, vanishes if and only if equality holds above. Since $B$ vanishes on $N(C)$, this is the case if and only if
+Because we are looking at the restriction of $H$ to $R(A)\oplus R(C)$ and because $H$ is positive definite on $R(A)\oplus R(C)$, we also get that $B$, when restricted to $R(C)$, vanishes if and only if equality holds above. Since $B$ vanishes on $N(C)$, this is the case if and only if
 \begin{equation}
 	B = 0.
 \end{equation}
@@ -251,7 +251,7 @@ We thus have the following result:
 
 Let us note that we arrived at this result in two steps. Because $H$ is positive semidefinite we know that $B$ restricted to $N(C)$ is zero. That the restriction of $B$ to the range $R(C)$ is also zero follows from Fischer's equality for the positive definite matrix that is $H$ restricted to $R(A)\oplus R(C)$.
 
-To show the inequality we could have also used equation (\ref{eqn.limit}) of lemma \ref{lem.gentdetprop}.
+We note that to show the inequality we could have also used equation (\ref{eqn.limit}) of lemma \ref{lem.gentdetprop}.
 
 \subsection{Schur complement}
 The Schur complement arises naturally when using Gaussian elimination to solve a linear equation. Let $H$ be as in equation (\ref{eqn.defh}) and let us assume we want to solve
@@ -273,7 +273,7 @@ The second equation of (\ref{eqn:lineq}) then gives
 \begin{equation}\label{eqn.gauss2}
 	(C - B^\star A^{-1}B) l = 0.
 \end{equation}
-The expression in the parentheses is called the Schur complement $H/A$ of $A$ in $H$:
+The expression in the parentheses is called the Schur complement of $A$ in $H$ and is denoted by $H/A$:
 \begin{equation}
 	H/A = C - B^\star A^{-1}B
 \end{equation}
@@ -451,7 +451,7 @@ It turns out that the choice of $X$ in theorem \ref{theo.x} gives $H$ unique pro
 	\begin{equation}
 		X = B C^+ D
 	\end{equation}
-	is the unique choice for $X$ for which $H$ is positive semidefinite, of maximal rank and for which the (generalized) determinant is maximal.  
+	is the unique choice for $X$ for which $H$ is positive semidefinite, of maximal rank, and for which the (generalized) determinant is maximal.  
 \end{theorem}
 
 \begin{proof}
@@ -523,7 +523,7 @@ with
 \end{equation}
 
 \section{Conclusion}
-The problem of how to complete partial Hermitian matrices arises frequently in practical applications (see \cite{otherpaper} for an example from finance). This problem was solved in \cite{grone} for partial matrices whose corresponding graph is chordal. The procedure provided in \cite{grone} was improved in \cite{smith} by giving a way to calculate whole blocks of the completion at once. For positive definite matrices the resulting completion is singled out by two uniqueness results. It is the unique matrix that maximizes the determinant, and it is the unique matrix whose inverse has zeroes in those places that were unspecified in the original matrix. In this paper we have extended these uniqueness results to include semidefinite matrices. To make this extension possible we needed to introduce a generalized determinant that gives the determinant of the nontrivial part of a Hermitian matrix. We also needed to focus on matrices whose rank is determined solely by the rank of its diagonal matrices. For these matrices the same uniqueness results hold that hold for positive definite matrices. 
+The problem of how to complete partial Hermitian matrices arises frequently in practical applications (see \cite{otherpaper} for an example from finance). This problem was solved in \cite{grone} for partial matrices whose corresponding graph is chordal. The procedure provided in \cite{grone} was improved upon in \cite{smith} by giving a way to calculate whole blocks of the completion at once. For positive definite matrices the resulting completion is singled out by two uniqueness results. It is the unique matrix that maximizes the determinant, and it is the unique matrix whose inverse has zeroes in those places that were unspecified in the original matrix. In this paper we have extended these uniqueness results to include semidefinite matrices. To make this extension possible we needed to introduce a generalized determinant that gives the determinant of the nontrivial part of a Hermitian matrix. We also needed to focus on matrices whose rank is determined solely by the rank of its diagonal matrices. For these matrices the same uniqueness results hold that hold for positive definite matrices. 
 
 \section*{Acknowledgement}
 I would like to thank Patrick B\"uchel for his support during the creation of this work as well as Horst K\"ohler and Thomas Streuer for their initial push to look into maximal determinant completions of matrices, and for their support during the creation of this work.
